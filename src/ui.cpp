@@ -2,9 +2,11 @@
 #include <clocale>
 #include <cursesw.h>
 
-CChar::CChar(wchar_t wcval) {
-	wchar_t tmp[] = {wcval, 0};
+const cchar_t _cchar(wchar_t wcval) {
+	wchar_t tmp[] = {wcval, '\0'};
+	cchar_t wc;
 	setcchar(&wc, tmp, WA_NORMAL, COLOR_PAIR(0), NULL);
+	return wc;
 }
 
 Screen::Screen() {
@@ -37,8 +39,8 @@ void Screen::draw_menu() {
 }
 
 void Screen::draw_border() {
-	border_set(&BORDER_VLINE.wc, &BORDER_VLINE.wc,
-			&BORDER_HLINE.wc, &BORDER_HLINE.wc,
-			&BORDER_TL.wc, &BORDER_TR.wc,
-			&BORDER_BL.wc, &BORDER_BR.wc);
+	border_set(&BORDER_VLINE, &BORDER_VLINE,
+			&BORDER_HLINE, &BORDER_HLINE,
+			&BORDER_TL, &BORDER_TR,
+			&BORDER_BL, &BORDER_BR);
 }
