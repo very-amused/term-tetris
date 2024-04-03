@@ -3,9 +3,6 @@
     "arguments": [
       "/usr/bin/clang++",
       "-O2",
-      "-march=native",
-      "-O2",
-      "-march=native",
       "-Iinclude",
       "-std=gnu++11",
       "-c",
