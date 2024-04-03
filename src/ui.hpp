@@ -1,4 +1,14 @@
 #pragma once
+#include <cursesw.h>
+
+
+// Wrapper around ncursesw cchar_t providing RAII from wchar_t
+struct CChar {
+	CChar(wchar_t wcval);
+
+	// Wide character
+	cchar_t wc;
+};
 
 // Ncurses screen state
 struct Screen {
@@ -9,23 +19,26 @@ struct Screen {
 	Screen(const Screen &) = delete;
 
 public:
-	void draw_border();
+	// Draw the main game menu
+	void draw_menu();
 
 private:
 	// Border chars (heavy)
 	// ref https://en.cppreference.com/w/cpp/language/character_literal
-	static const wchar_t BORDER_HLINE = L'━';
-	static const wchar_t BORDER_VLINE = L'┃';
-	static const wchar_t BORDER_TL = L'┏';
-	static const wchar_t BORDER_TR = L'┓';
-	static const wchar_t BORDER_BL = L'┗';
-	static const wchar_t BORDER_BR = L'┛';
+	const CChar BORDER_HLINE = CChar(L'━');
+	const CChar BORDER_VLINE = CChar(L'┃');
+	const CChar BORDER_TL = CChar(L'┏');
+	const CChar BORDER_TR = CChar(L'┓');
+	const CChar BORDER_BL = CChar(L'┗');
+	const CChar BORDER_BR = CChar(L'┛');
 	// Border chars (light)
-	static const wchar_t BORDER_HLINE_LIGHT = L'─';
-	static const wchar_t BORDER_VLINE_LIGHT = L'│';
-	static const wchar_t BORDER_TL_LIGHT = L'┌';
-	static const wchar_t BORDER_TR_LIGHT = L'┐';
-	static const wchar_t BORDER_BL_LIGHT = L'└';
-	static const wchar_t BORDER_BR_LIGHT = L'┘';
+	const CChar BORDER_HLINE_LIGHT = CChar(L'─');
+	const CChar BORDER_VLINE_LIGHT = CChar(L'│');
+	const CChar BORDER_TL_LIGHT = CChar(L'┌');
+	const CChar BORDER_TR_LIGHT = CChar(L'┐');
+	const CChar BORDER_BL_LIGHT = CChar(L'└');
+	const CChar BORDER_BR_LIGHT = CChar(L'┘');
 
+	// Draw heavy screen border
+	void draw_border();
 };
