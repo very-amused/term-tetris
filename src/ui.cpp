@@ -1,16 +1,15 @@
 #include "ui.hpp"
-extern "C" {
 #include <cursesw.h>
-}
 #include <clocale>
 
 Screen::Screen() {
+	// ref https://dev.to/tbhaxor/introduction-to-ncurses-part-1-1bk5
 	// Initialize locale
 	setlocale(LC_ALL, "");
 
-	// Initialize screen
-	// ref: man ncurses
+	// ref man ncurses
 	// ref man cbreak
+	// Initialize screen
 	initscr();
 	// Disable terminal buffering
 	cbreak();
