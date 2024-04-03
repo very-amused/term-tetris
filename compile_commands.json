@@ -1,0 +1,18 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-O2",
+      "-march=native",
+      "-O2",
+      "-march=native",
+      "-Iinclude",
+      "-std=gnu++11",
+      "-c",
+      "-osrc/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/kscr/repos/term-tetris",
+    "file": "/home/kscr/repos/term-tetris/src/main.cpp"
+  }
+]
