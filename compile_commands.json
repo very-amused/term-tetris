@@ -19,10 +19,10 @@
       "-Iinclude",
       "-std=gnu++11",
       "-c",
-      "-osrc/menu.o",
-      "src/menu.cpp"
+      "-osrc/ui.o",
+      "src/ui.cpp"
     ],
     "directory": "/home/kscr/repos/term-tetris",
-    "file": "/home/kscr/repos/term-tetris/src/menu.cpp"
+    "file": "/home/kscr/repos/term-tetris/src/ui.cpp"
   }
 ]

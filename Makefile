@@ -5,7 +5,7 @@ CXXFLAGS = $(CFLAGS) -std=gnu++11
 CXX=clang++
 
 # Source and object files
-src=src/main.cpp src/ui.cpp
+src=src/main.cpp src/ui.cpp src/main_menu.cpp
 objects=$(src:.cpp=.o)
 
 outdir=build
@@ -21,6 +21,6 @@ $(tetris): $(objects)
 src/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o$@ $<
 
-clean: $(objects) $(tetris)
+clean:
 	rm -f $(objects) $(tetris)
 .PHONY: clean

@@ -1,16 +1,13 @@
 #include "ui.hpp"
-#include <cwchar>
 #include <cursesw.h>
 
 int main() {
 	// Init ncurses
-	Screen screen;
+	MainScreen screen;
 
-	screen.draw_menu();
-	refresh();
-
-	getch();
-
+	while (screen.screen != Screen::None) {
+		screen.show_next();
+	}
 
 	return 0;
 }

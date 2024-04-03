@@ -1,39 +1,62 @@
 #pragma once
 #include <cursesw.h>
-
+#include <memory>
+#include "screen.hpp"
+#include "main_menu.hpp"
 
 // Functional wrapper around ncursesw cchar_t
 const cchar_t _cchar(wchar_t wcval);
 
-// Ncurses screen state
-struct Screen {
-	Screen();
-	~Screen();
+// Border chars (heavy)
+// ref https://en.cppreference.com/w/cpp/language/character_literal
+static const cchar_t BORDER_HLINE = _cchar(L'━');
+static const cchar_t BORDER_VLINE = _cchar(L'┃');
+static const cchar_t BORDER_TL = _cchar(L'┏');
+static const cchar_t BORDER_TR = _cchar(L'┓');
+static const cchar_t BORDER_BL = _cchar(L'┗');
+static const cchar_t BORDER_BR = _cchar(L'┛');
+// Border chars (light)
+static const cchar_t BORDER_HLINE_LIGHT = _cchar(L'─');
+static const cchar_t BORDER_VLINE_LIGHT = _cchar(L'│');
+static const cchar_t BORDER_TL_LIGHT = _cchar(L'┌');
+static const cchar_t BORDER_TR_LIGHT = _cchar(L'┐');
+static const cchar_t BORDER_BL_LIGHT = _cchar(L'└');
+static const cchar_t BORDER_BR_LIGHT = _cchar(L'┘');
+// Internal border chars (pipe)
+static const cchar_t BORDER_ML_PIPE = _cchar(L'╞');
+static const cchar_t BORDER_MR_PIPE = _cchar(L'╡');
+static const cchar_t BORDER_HLINE_PIPE = _cchar(L'═');
+
+// Draw a light border, for use with derived (sub) windows
+void draw_border_light(WINDOW *win);
+
+// TODO: document
+int x_centered(int width);
+int y_centered(int height);
+void draw_pipe_hline(WINDOW *win);
+
+// Main game menu + high scores
+struct MenuScreen;
+
+// Ncurses stdscr state
+struct MainScreen {
+	MainScreen();
+	~MainScreen();
 	// Ref jplank
 	// We don't want to ever copy our global screen state
-	Screen(const Screen &) = delete;
+	MainScreen(const MainScreen &) = delete;
 
 public:
-	// Draw the main game menu
-	void draw_menu();
+	// Current screen
+	Screen screen;
+	// Show the currently set screen, creating it if needed
+	void show_next();
 
 private:
-	// Border chars (heavy)
-	// ref https://en.cppreference.com/w/cpp/language/character_literal
-	const cchar_t BORDER_HLINE = _cchar(L'━');
-	const cchar_t BORDER_VLINE = _cchar(L'┃');
-	const cchar_t BORDER_TL = _cchar(L'┏');
-	const cchar_t BORDER_TR = _cchar(L'┓');
-	const cchar_t BORDER_BL = _cchar(L'┗');
-	const cchar_t BORDER_BR = _cchar(L'┛');
-	// Border chars (light)
-	const cchar_t BORDER_HLINE_LIGHT = _cchar(L'─');
-	const cchar_t BORDER_VLINE_LIGHT = _cchar(L'│');
-	const cchar_t BORDER_TL_LIGHT = _cchar(L'┌');
-	const cchar_t BORDER_TR_LIGHT = _cchar(L'┐');
-	const cchar_t BORDER_BL_LIGHT = _cchar(L'└');
-	const cchar_t BORDER_BR_LIGHT = _cchar(L'┘');
-
-	// Draw heavy screen border
+	// Draw a heavy screen border
 	void draw_border();
+
+	// Screens
+	std::unique_ptr<MenuScreen> menu;
 };
+
