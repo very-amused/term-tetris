@@ -33,9 +33,12 @@ void MenuScreen::show(Screen &screen) {
 	SelectMenu select_menu(win, &select_opts);
 	select_menu.draw();
 	wrefresh(win); // Widget cuts into parent window, so we need a refresh
+
 	while (select_menu.next_update()) {
 		select_menu.draw();
 	}
+
+	// Handle final selection
 	switch (select_menu.selection) {
 	case 0:
 		// Play

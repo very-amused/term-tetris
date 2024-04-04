@@ -1,11 +1,12 @@
 O=-O2
 CFLAGS = $(O) -Iinclude
-LDFLAGS= -lncursesw
+LDFLAGS= -lncursesw -lsqlite3
 CXXFLAGS = $(CFLAGS) -std=gnu++11
 CXX=clang++
 
 # Source and object files
-src=src/main.cpp src/ui.cpp src/main_menu.cpp $(shell find src/widgets/*.cpp)
+src=$(shell find src/*.cpp) $(shell find src/widgets/*.cpp)
+asm=src/schema.s
 objects=$(src:.cpp=.o)
 
 outdir=build
@@ -15,7 +16,7 @@ $(shell if [ ! -d $(outdir) ]; then mkdir $(outdir); fi)
 # Targets
 tetris=$(outdir)/tetris
 
-$(tetris): $(objects)
+$(tetris): $(objects) $(asm)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o$@ $^
 
 src/%.o: src/%.cpp
