@@ -31,11 +31,26 @@ void MenuScreen::show(Screen &screen) {
 		SelectItem("Exit")
 	};
 	SelectMenu select_menu(win, &select_opts);
-	int selection;
-	select_menu.show(selection);
-
-	// Wait for input
-	wgetch(this->win);
+	select_menu.draw();
+	wrefresh(win); // Widget cuts into parent window, so we need a refresh
+	while (select_menu.next_update()) {
+		select_menu.draw();
+	}
+	switch (select_menu.selection) {
+	case 0:
+		// Play
+		// TODO
+		screen = Screen::None;
+		break;
+	case 1:
+		// High Scores
+		screen = Screen::HighScores;
+		break;
+	case 2:
+		// Exit
+		screen = Screen::None;
+		break;
+	}
 
 	// Exit
 	screen = Screen::None;
