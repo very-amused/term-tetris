@@ -40,6 +40,5 @@ int DB::init() {
 DB::~DB() {
 	if (db != NULL) {
 		while (sqlite3_close(db) == SQLITE_BUSY) {};
-		sqlite3_close(db);
 	}
 }
