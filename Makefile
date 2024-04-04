@@ -23,5 +23,5 @@ src/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o$@ $<
 
 clean:
-	rm -f $(objects) $(tetris)
+	rm -f $(objects) $(asm) $(tetris)
 .PHONY: clean

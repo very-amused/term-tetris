@@ -4,9 +4,11 @@
 #include <sqlite3.h>
 #include <stdint.h>
 
-// sqlite database schema
+// schema.sql
+// included via schema.s (John Ripley's fantastic trick) 
+// ref https://stackoverflow.com/a/4910421
 extern "C" {
-extern const char *DB_schema;
+extern const char DB_schema[];
 extern const uint64_t DB_schema_len;
 }
 
