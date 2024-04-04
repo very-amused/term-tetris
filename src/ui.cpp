@@ -1,6 +1,9 @@
 #include "ui.hpp"
 #include <clocale>
 #include <cursesw.h>
+#include <string>
+
+using std::string;
 
 const cchar_t _cchar(wchar_t wcval) {
 	wchar_t tmp[] = {wcval, '\0'};
@@ -88,9 +91,26 @@ int y_centered(int height) {
 	return LINES/2 - height/2;
 }
 
-void draw_pipe_hline(WINDOW *win) {
-	wadd_wch(win, &BORDER_ML_PIPE);
-	whline_set(win, &BORDER_HLINE_PIPE, getmaxx(win) - 2);
+void draw_hline(WINDOW *win,
+		const cchar_t &BORDER_ML,
+		const cchar_t &BORDER_HLINE,
+		const cchar_t &BORDER_MR) {
+	wadd_wch(win, &BORDER_ML);
+	whline_set(win, &BORDER_HLINE, getmaxx(win) - 2);
 	wmove(win, getcury(win), getmaxx(win) - 1);
-	wadd_wch(win, &BORDER_MR_PIPE);
+	wadd_wch(win, &BORDER_MR);
+}
+
+void draw_titlebar(WINDOW *win, string title) {
+	// Draw top pipe bar
+	wmove(win, 1, 0);
+	draw_hline(win, BORDER_ML_PIPE, BORDER_HLINE_PIPE, BORDER_MR_PIPE);
+
+	// Draw title (centered)
+	wmove(win, 2, getmaxx(win)/2 - title.size()/2);
+	waddstr(win, (char *)title.c_str());
+
+	// Draw bottom pipe bar
+	wmove(win, 3, 0);
+	draw_hline(win, BORDER_ML_PIPE, BORDER_HLINE_PIPE, BORDER_MR_PIPE);
 }

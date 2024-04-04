@@ -22,7 +22,9 @@ static const cchar_t BORDER_TL_LIGHT = _cchar(L'┌');
 static const cchar_t BORDER_TR_LIGHT = _cchar(L'┐');
 static const cchar_t BORDER_BL_LIGHT = _cchar(L'└');
 static const cchar_t BORDER_BR_LIGHT = _cchar(L'┘');
-// Internal border chars (pipe)
+static const cchar_t BORDER_ML_LIGHT = _cchar(L'├');
+static const cchar_t BORDER_MR_LIGHT = _cchar(L'┤');
+// Border chars (pipe)
 static const cchar_t BORDER_ML_PIPE = _cchar(L'╞');
 static const cchar_t BORDER_MR_PIPE = _cchar(L'╡');
 static const cchar_t BORDER_HLINE_PIPE = _cchar(L'═');
@@ -33,7 +35,11 @@ void draw_border_light(WINDOW *win);
 // TODO: document
 int x_centered(int width);
 int y_centered(int height);
-void draw_pipe_hline(WINDOW *win);
+void draw_hline(WINDOW *win,
+		const cchar_t &BORDER_ML = BORDER_ML_LIGHT,
+		const cchar_t &BORDER_HLINE = BORDER_HLINE_LIGHT,
+		const cchar_t &BORDER_MR = BORDER_MR_LIGHT);
+void draw_titlebar(WINDOW *win, std::string title);
 
 // Main game menu + high scores
 struct MenuScreen;

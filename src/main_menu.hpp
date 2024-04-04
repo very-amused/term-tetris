@@ -1,5 +1,6 @@
 #pragma once
 #include <cursesw.h>
+#include <string>
 #include "screen.hpp"
 
 struct MenuScreen {
@@ -14,5 +15,5 @@ public:
 
 private:
 	WINDOW *win;
-	void draw_title();
+	void draw_title(std::string title);
 };
