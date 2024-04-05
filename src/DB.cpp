@@ -22,13 +22,17 @@ int DB::init() {
 	// ref https://stackoverflow.com/a/7430262
 	const string db_dir = DB_path_dir();
 	struct stat st = {0};
+	int status;
 	if (stat(db_dir.c_str(), &st) == -1) {
-		mkdir(db_dir.c_str(), 0755);
+		status = mkdir(db_dir.c_str(), 0755);
+		if (status != 0) {
+			return status;
+		}
 	}
 	
 
 	// Open DB file
-	int status = sqlite3_open(DB::path().c_str(), &db);
+	status = sqlite3_open(DB::path().c_str(), &db);
 	if (status != 0) {
 		return status;
 	}
