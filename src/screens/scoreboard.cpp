@@ -66,20 +66,24 @@ void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 		auto score = sqlite3_column_int64(scores_stmt.stmt, 0);
 		const char *player_name = (const char *)sqlite3_column_text(scores_stmt.stmt, 1);
 
+		// TODO: this format sucks, we should make a grid for this
 		// Use format: {name} - {score}
 		// for displaying player scores
 		string score_line = string(player_name) + " - " + std::to_string(score);
+		//fprintf(stderr, "%s\n", score_line.c_str());
 		waddstr(win, (char *)score_line.c_str());
 
 		y++;
 	}
 	if (y == y_start) {
-		const string msg = "No scores yet.";
+		static const string msg = "No scores yet.";
 		// We use (msg.size() - 1) to account for the fact that our brains don't seem to consider punctuation when seeing text as centered
 		wmove(win, y_start + y_centered(n_scores - y), getmaxx(win)/2 - (msg.size() - 1)/2);
 		waddstr(win, (char *)msg.c_str());
-		wrefresh(win);
 	}
+
+	// Display the text we just wrote
+	wrefresh(win);
 
 	while (select_menu.next_update()) {
 		select_menu.draw();
