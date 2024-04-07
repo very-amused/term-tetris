@@ -70,7 +70,6 @@ void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 		// Use format: {name} - {score}
 		// for displaying player scores
 		string score_line = string(player_name) + " - " + std::to_string(score);
-		//fprintf(stderr, "%s\n", score_line.c_str());
 		waddstr(win, (char *)score_line.c_str());
 
 		y++;
