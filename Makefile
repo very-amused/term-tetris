@@ -1,7 +1,7 @@
 O=-O2
 CFLAGS = $(O)
-LDFLAGS= -lncursesw -lsqlite3
-CXXFLAGS = $(CFLAGS) -std=gnu++11
+LDFLAGS=-lncursesw -lsqlite3
+CXXFLAGS=$(CFLAGS) -std=gnu++11
 CXX=clang++
 
 # Source and object files

@@ -3,6 +3,7 @@
 #include <memory>
 #include "screen.hpp"
 #include "main_menu.hpp"
+#include "game_screen.hpp"
 
 // Functional wrapper around ncursesw cchar_t
 const cchar_t _cchar(wchar_t wcval);
@@ -71,5 +72,6 @@ private:
 
 	// Screens
 	std::unique_ptr<MenuScreen> menu;
+	std::unique_ptr<GameScreen> game;
 };
 

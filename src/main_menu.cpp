@@ -42,8 +42,7 @@ void MenuScreen::show(Screen &screen) {
 	switch (select_menu.selection) {
 	case 0:
 		// Play
-		// TODO
-		screen = Screen::None;
+		screen = Screen::Game;
 		break;
 	case 1:
 		// High Scores
@@ -52,10 +51,6 @@ void MenuScreen::show(Screen &screen) {
 	case 2:
 		// Exit
 		screen = Screen::None;
-		break;
 	}
-
-	// Exit
-	screen = Screen::None;
 }
 

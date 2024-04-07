@@ -47,25 +47,26 @@ MainScreen::~MainScreen() {
 void MainScreen::show_next() {
 	switch (screen) {
 	case Screen::None:
-	{
 		return;
-	}
 
 	case Screen::Menu:
-	{
 		// Create menu window if it doesn't exist
 		if (!menu) {
 			menu.reset(new MenuScreen);
 		}
 		// Show main menu, deferring input handling until the user takes an action prompting a new screen
 		menu->show(screen);
-	}
 
 	case Screen::HighScores:
-	{
 		// TODO
 		return;
-	}
+
+	case Screen::Game:
+		// Create game screen window if it doesn't exist
+		if (!game) {
+			game.reset(new GameScreen);
+		}
+		game->show(screen);
 	}
 }
 
