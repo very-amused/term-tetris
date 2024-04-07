@@ -46,7 +46,7 @@ void MenuScreen::show(Screen &screen) {
 		break;
 	case 1:
 		// High Scores
-		screen = Screen::HighScores;
+		screen = Screen::Leaderboard;
 		break;
 	case 2:
 		// Exit

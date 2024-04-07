@@ -71,7 +71,7 @@ void MainScreen::show_next() {
 		if (!scoreboard) {
 			scoreboard.reset(new ScoreboardScreen);
 		}
-		scoreboard->show(screen);
+		scoreboard->show(screen, db);
 		return;
 
 	case Screen::Game:

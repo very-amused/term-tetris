@@ -46,3 +46,13 @@ DB::~DB() {
 		while (sqlite3_close(db) == SQLITE_BUSY) {};
 	}
 }
+
+int DB::prepare_stmt(string query, Stmt &stmt) {
+	return sqlite3_prepare_v2(db, query.c_str(), query.size(), &stmt.stmt, NULL);
+}
+
+Stmt::~Stmt() {
+	if (stmt != NULL) {
+		sqlite3_finalize(stmt);
+	}
+}
