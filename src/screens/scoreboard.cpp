@@ -12,6 +12,7 @@ ScoreboardScreen::~ScoreboardScreen() {
 }
 
 void ScoreboardScreen::show(Screen &screen) {
-	// TODO
+	// Get the top 10 scores
+	// TODO: calculate n scores to get based on available lines
 	screen = Screen::None;
 }

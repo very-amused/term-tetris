@@ -2,8 +2,10 @@
 #include <clocale>
 #include <cursesw.h>
 #include <string>
+#include <memory>
 
 using std::string;
+using std::unique_ptr;
 
 const cchar_t _cchar(wchar_t wcval) {
 	wchar_t tmp[] = {wcval, '\0'};
@@ -40,6 +42,14 @@ MainScreen::MainScreen() {
 }
 
 MainScreen::~MainScreen() {
+	// Close DB
+	db.reset();
+
+	// Free owned screens
+	menu.reset();
+	scoreboard.reset();
+	game.reset();
+
 	// Reset terminal state before exiting
 	endwin();
 }
@@ -68,6 +78,10 @@ void MainScreen::show_next() {
 		}
 		game->show(screen);
 	}
+}
+
+void MainScreen::attach_db(unique_ptr<DB> &db) {
+	this->db.swap(db);
 }
 
 void MainScreen::draw_border() {
