@@ -1,6 +1,6 @@
 #pragma once
 #include <cursesw.h>
-#include "screen.hpp"
+#include "../screens.hpp"
 
 struct GameScreen {
 	GameScreen();

@@ -1,6 +1,6 @@
 #include "main_menu.hpp"
-#include "ui.hpp"
-#include "widgets/select.hpp"
+#include "../ui.hpp"
+#include "../widgets/select.hpp"
 #include <string>
 
 using std::string;

@@ -1,4 +1,4 @@
-#include "game_screen.hpp"
+#include "game.hpp"
 
 GameScreen::GameScreen() {
 	// Create window
