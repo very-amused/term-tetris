@@ -67,8 +67,11 @@ void MainScreen::show_next() {
 		// Show main menu, deferring input handling until the user takes an action prompting a new screen
 		menu->show(screen);
 
-	case Screen::HighScores:
-		// TODO
+	case Screen::Leaderboard:
+		if (!scoreboard) {
+			scoreboard.reset(new ScoreboardScreen);
+		}
+		scoreboard->show(screen);
 		return;
 
 	case Screen::Game:

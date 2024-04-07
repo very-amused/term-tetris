@@ -2,6 +2,6 @@
 enum struct Screen {
 	None, // Screen::None indicates the user has chosen to exit
 	Menu, // Main menu
-	HighScores, // Leaderboard
+	Leaderboard, // Leaderboard
 	Game // Main game
 };
