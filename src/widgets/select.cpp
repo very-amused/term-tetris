@@ -84,3 +84,7 @@ bool SelectMenu::next_update() {
 
 	return true;
 }
+
+const int SelectMenu::lines() {
+	return getmaxy(win);
+}

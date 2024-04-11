@@ -16,6 +16,8 @@ extern const uint64_t DB_schema_len;
 // ~/.local/share/term-tetris.db
 const std::string DB_path();
 
+struct Stmt;
+
 // Database connection
 struct DB {
 	~DB();
@@ -26,9 +28,20 @@ public:
 	// set after calling sqlite3 functions
 	char *errmsg;
 
+	// Prepare the next statement for execution
+	int prepare_stmt(std::string query, Stmt &stmt);
+
 private:
 	sqlite3 *db = NULL;
 
 	// DB file path
 	static const std::string path();
+};
+
+// sqlite3_stmt wrapper providing RAII for sqlite3_finalize
+struct Stmt {
+	~Stmt();
+
+public:
+	sqlite3_stmt *stmt = NULL;
 };

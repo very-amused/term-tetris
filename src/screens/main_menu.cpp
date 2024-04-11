@@ -1,6 +1,6 @@
 #include "main_menu.hpp"
-#include "ui.hpp"
-#include "widgets/select.hpp"
+#include "../ui.hpp"
+#include "../widgets/select.hpp"
 #include <string>
 
 using std::string;
@@ -42,20 +42,15 @@ void MenuScreen::show(Screen &screen) {
 	switch (select_menu.selection) {
 	case 0:
 		// Play
-		// TODO
-		screen = Screen::None;
+		screen = Screen::Game;
 		break;
 	case 1:
 		// High Scores
-		screen = Screen::HighScores;
+		screen = Screen::Leaderboard;
 		break;
 	case 2:
 		// Exit
 		screen = Screen::None;
-		break;
 	}
-
-	// Exit
-	screen = Screen::None;
 }
 

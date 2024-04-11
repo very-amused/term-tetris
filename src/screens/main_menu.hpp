@@ -1,7 +1,7 @@
 #pragma once
 #include <cursesw.h>
 #include <string>
-#include "screen.hpp"
+#include "../screens.hpp"
 
 struct MenuScreen {
 	MenuScreen();

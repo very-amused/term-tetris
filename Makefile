@@ -1,11 +1,11 @@
 O=-O2
-CFLAGS = $(O) -Iinclude
-LDFLAGS= -lncursesw -lsqlite3
-CXXFLAGS = $(CFLAGS) -std=gnu++11
+CFLAGS = $(O)
+LDFLAGS=-lncursesw -lsqlite3
+CXXFLAGS=$(CFLAGS) -std=gnu++11
 CXX=clang++
 
 # Source and object files
-src=$(shell find src/*.cpp) $(shell find src/widgets/*.cpp)
+src=$(shell find src/*.cpp) $(shell find src/widgets/*.cpp) $(shell find src/screens/*.cpp)
 asm=src/schema.s
 objects=$(src:.cpp=.o)
 

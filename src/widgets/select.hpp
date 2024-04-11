@@ -24,6 +24,9 @@ public:
 	// A return value of false indicates that the selection was confirmed and the caller should proceed
 	bool next_update();
 
+	// Get the number of lines occupied by a SelectMenu
+	const int lines();
+
 	// The index of the currently selected item
 	int selection;
 

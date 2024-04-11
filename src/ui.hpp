@@ -1,8 +1,12 @@
 #pragma once
 #include <cursesw.h>
 #include <memory>
-#include "screen.hpp"
-#include "main_menu.hpp"
+
+#include "screens.hpp"
+#include "screens/main_menu.hpp"
+#include "screens/game.hpp"
+#include "DB.hpp"
+#include "screens/scoreboard.hpp"
 
 // Functional wrapper around ncursesw cchar_t
 const cchar_t _cchar(wchar_t wcval);
@@ -65,11 +69,20 @@ public:
 	// Show the currently set screen, creating it if needed
 	void show_next();
 
+	// Attach SQLite DB connection
+	// (invalidates the ptr variable passed as parameter)
+	void attach_db(std::unique_ptr<DB> &db);
+
 private:
 	// Draw a heavy screen border
 	void draw_border();
 
+	// DB connection
+	std::unique_ptr<DB> db;
+
 	// Screens
 	std::unique_ptr<MenuScreen> menu;
+	std::unique_ptr<ScoreboardScreen> scoreboard;
+	std::unique_ptr<GameScreen> game;
 };
 

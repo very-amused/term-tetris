@@ -2,8 +2,10 @@
 #include <clocale>
 #include <cursesw.h>
 #include <string>
+#include <memory>
 
 using std::string;
+using std::unique_ptr;
 
 const cchar_t _cchar(wchar_t wcval) {
 	wchar_t tmp[] = {wcval, '\0'};
@@ -40,6 +42,14 @@ MainScreen::MainScreen() {
 }
 
 MainScreen::~MainScreen() {
+	// Close DB
+	db.reset();
+
+	// Free owned screens
+	menu.reset();
+	scoreboard.reset();
+	game.reset();
+
 	// Reset terminal state before exiting
 	endwin();
 }
@@ -47,26 +57,34 @@ MainScreen::~MainScreen() {
 void MainScreen::show_next() {
 	switch (screen) {
 	case Screen::None:
-	{
 		return;
-	}
 
 	case Screen::Menu:
-	{
 		// Create menu window if it doesn't exist
 		if (!menu) {
 			menu.reset(new MenuScreen);
 		}
 		// Show main menu, deferring input handling until the user takes an action prompting a new screen
 		menu->show(screen);
-	}
 
-	case Screen::HighScores:
-	{
-		// TODO
+	case Screen::Leaderboard:
+		if (!scoreboard) {
+			scoreboard.reset(new ScoreboardScreen);
+		}
+		scoreboard->show(screen, db);
 		return;
+
+	case Screen::Game:
+		// Create game screen window if it doesn't exist
+		if (!game) {
+			game.reset(new GameScreen);
+		}
+		game->show(screen);
 	}
-	}
+}
+
+void MainScreen::attach_db(unique_ptr<DB> &db) {
+	this->db.swap(db);
 }
 
 void MainScreen::draw_border() {
