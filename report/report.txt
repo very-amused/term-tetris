@@ -1,0 +1,16 @@
+# vi: ft=markdown
+
+For the final project, my group is making a Tetris clone that runs in the terminal. We're using sqlite3 to persist high scores and ncurses to program full 2D terminal graphics.
+
+On a high level, we're organizing things in terms of *screens* and *widgets*. Both of these are ncurses windows under the hood, but carry different purposes. A screen is a piece of content which takes up all or most of the terminal viewport and serves a unified purpose (i.e main menu, leaderboard, game screen, etc). Widgets are smaller windows serving as a UI component for a screen. Currently, widgets have been used to implement select menus and the leaderboard. As we move forward to writing the main game screen, widgets are going to be used to create the blocks and add color to them. Since we're doing 2D graphics programming, the sky is the limit when it comes to edge cases, and I'm sure we'll find plenty pertaining to collision detection when implementing the game itself.
+
+Using OOP allows us to make the code structure resemble the game structure. RAII is a massive help when working with C libraries like sqlite3 and ncurses, as it lets us stuff setup and teardown code into object constructors and destructors respectively. The main con we're seeing with OOP is that it would easily allow us to turn this project into a huge spaghetti bowl, so we have to be *extremely* careful and cognizant of how we're structuring things.
+
+The MVP data structure here is definitely going to be the 2D vector. My group has had some high level planning talks where we've decided that we're going to implement blocks as 2D vector of square windows with a fixed grid size. By doing this, translation and rotation of each piece will use the same code; the block specific code is collision detection. Once we have two blocks with overlapping grids, we'll then know to check the actual solid cells of the blocks to check for a collision. I assume the same principle can be applied to walls: check for solid cell collision once the grids overlap.
+
+Reproducible integration testing for this project is possible, but probably not practical within the timeframe. In theory, we could write an AI player capable of reading the game state and using it to deterministically make certain moves. We could then seed the RNG and let the AI automate our gaming. However, who wants AI to automate our gaming? Human testing by playing the game is the realistic (and more enjoyable) method. For two tests, I propose the following:
+
+1. Start the game up, play a game of Tetris and intentionally get a low score. Next, play another game of Tetris. Quit the game, start it back up, and check that the second game (with the higher score) is displayed above the first one on the leaderboard.
+2. Play a game and be very aggressive with the controls to try and wring out any possibility of object clipping. No matter what control inputs you provide, the physics and game logic should stay intact.
+
+My ideal rubric regarding the final lab is that it should clearly be a functional version of Tetris. The game should be fun to play and have no obvious bugs. Standard user tests like the two examples I've given could be used to create more objective criteria.
