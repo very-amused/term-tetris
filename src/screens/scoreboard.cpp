@@ -28,13 +28,15 @@ static const vector<SelectItem> SELECT_OPTS = {
 };
 
 void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
+	// Draw screen border
+	draw_border();
 	// Draw window border
 	draw_border_light(win);
 	// Draw title
 	draw_titlebar(win, "Leaderboard");
 	refresh();
 
-	SelectMenu select_menu(win, SELECT_OPTS);
+	static SelectMenu select_menu(win, SELECT_OPTS);
 	select_menu.draw();
 	wrefresh(win);
 
@@ -89,7 +91,9 @@ void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 
 	while (select_menu.next_update()) {
 		select_menu.draw();
-}
+	}
 
-	screen = Screen::None;
+	werase(win);
+	wrefresh(win);
+	screen = Screen::Menu;
 }

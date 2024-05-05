@@ -1,5 +1,5 @@
 O=-O3
-CFLAGS = $(O)
+CFLAGS = $(O) -g
 LDFLAGS=-lncursesw -lsqlite3
 CXXFLAGS=$(CFLAGS) -std=gnu++11
 

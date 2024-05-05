@@ -36,8 +36,6 @@ MainScreen::MainScreen() {
 	// Enable keypad support
 	keypad(stdscr, TRUE);
 
-	// Draw the outer screen border
-	draw_border();
 	// Set the main menu as the first window to be shown
 	screen = Screen::Menu;
 }

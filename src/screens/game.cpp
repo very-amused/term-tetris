@@ -18,5 +18,7 @@ void GameScreen::show(Screen &screen) {
 	getch();
 
 	// After a game, we return to the main menu
+	werase(win);
+	wrefresh(win);
 	screen = Screen::Menu;
 }

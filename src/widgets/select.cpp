@@ -29,7 +29,7 @@ SelectMenu::SelectMenu(WINDOW *parent, const vector<SelectItem> items) {
 		if (item.shortcut <= 0) {
 			continue;
 		}
-		this->shortcuts.push_back(SelectShortcut_ { .key = item.shortcut, .index = i });
+		shortcuts.push_back(SelectShortcut_ { .key = item.shortcut, .index = i });
 	}
 
 	// Start at the top for selection

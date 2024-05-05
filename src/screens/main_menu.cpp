@@ -24,6 +24,8 @@ static const vector<SelectItem> SELECT_OPTS = {
 };
 
 void MenuScreen::show(Screen &screen) {
+	// Draw screen border
+	draw_border();
 	// Draw window border
 	draw_border_light(win);
 	// Draw title
@@ -31,7 +33,7 @@ void MenuScreen::show(Screen &screen) {
 	refresh();
 
 	// Draw menu options
-	SelectMenu select_menu(win, SELECT_OPTS);
+	static SelectMenu select_menu(win, SELECT_OPTS);
 	select_menu.draw();
 	wrefresh(win); // Widget cuts into parent window, so we need a refresh
 
