@@ -1,7 +1,10 @@
 #pragma once
-#include <cursesw.h>
-#include <string>
 #include "../screens.hpp"
+#include "../widgets/select.hpp"
+
+#include <cursesw.h>
+#include <memory>
+#include <string>
 
 struct MenuScreen {
 	MenuScreen();
@@ -15,5 +18,9 @@ public:
 
 private:
 	WINDOW *win;
+
+	static const std::vector<SelectItem> SELECT_OPTS;
+	std::unique_ptr<SelectMenu> select_menu;
+
 	void draw_title(std::string title);
 };

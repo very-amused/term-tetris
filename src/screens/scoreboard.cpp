@@ -23,7 +23,7 @@ ScoreboardScreen::~ScoreboardScreen() {
 	delwin(win);
 }
 
-static const vector<SelectItem> SELECT_OPTS = {
+const vector<SelectItem> ScoreboardScreen::SELECT_OPTS = {
 	SelectItem("Exit", 'q')
 };
 
@@ -36,15 +36,17 @@ void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 	draw_titlebar(win, "Leaderboard");
 	refresh();
 
-	static SelectMenu select_menu(win, SELECT_OPTS);
-	select_menu.draw();
+	if (select_menu == NULL) {
+		select_menu.reset(new SelectMenu(win, SELECT_OPTS));
+	}
+	select_menu->draw();
 	wrefresh(win);
 
 
 	// Calculate how many scores we can display
 	static const int titlebar_lines = 3;
 	static const int y_start = titlebar_lines + 1; // Starting y
-	const int n_scores = getmaxy(win) -  select_menu.lines() - y_start;
+	const int n_scores = getmaxy(win) -  select_menu->lines() - y_start;
 
 	// Prepare stmt to get the top n scores
 	Stmt scores_stmt;
@@ -89,8 +91,8 @@ void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 	// Display the text we just wrote
 	wrefresh(win);
 
-	while (select_menu.next_update()) {
-		select_menu.draw();
+	while (select_menu->next_update()) {
+		select_menu->draw();
 	}
 
 	werase(win);

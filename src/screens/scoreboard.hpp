@@ -1,6 +1,7 @@
 #pragma once
 #include "../DB.hpp"
 #include "../screens.hpp"
+#include "../widgets/select.hpp"
 
 #include <cursesw.h>
 #include <memory>
@@ -16,4 +17,7 @@ public:
 
 private:
 	WINDOW *win;
+
+	static const std::vector<SelectItem> SELECT_OPTS;
+	std::unique_ptr<SelectMenu> select_menu;
 };

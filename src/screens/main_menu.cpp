@@ -17,7 +17,7 @@ MenuScreen::~MenuScreen() {
 	delwin(this->win);
 }
 
-static const vector<SelectItem> SELECT_OPTS = {
+const vector<SelectItem> MenuScreen::SELECT_OPTS = {
 	SelectItem("Play"),
 	SelectItem("High Scores"),
 	SelectItem("Exit", 'q')
@@ -33,16 +33,18 @@ void MenuScreen::show(Screen &screen) {
 	refresh();
 
 	// Draw menu options
-	static SelectMenu select_menu(win, SELECT_OPTS);
-	select_menu.draw();
+	if (select_menu == NULL) {
+		select_menu.reset(new SelectMenu(win, SELECT_OPTS));
+	}
+	select_menu->draw();
 	wrefresh(win); // Widget cuts into parent window, so we need a refresh
 
-	while (select_menu.next_update()) {
-		select_menu.draw();
+	while (select_menu->next_update()) {
+		select_menu->draw();
 	}
 
 	// Handle final selection
-	switch (select_menu.selection) {
+	switch (select_menu->selection) {
 	case 0:
 		// Play
 		screen = Screen::Game;
