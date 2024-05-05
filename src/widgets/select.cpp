@@ -1,18 +1,21 @@
 #include "select.hpp"
 #include "../ui.hpp"
+
 #include <cursesw.h>
 
 using std::vector;
 using std::string;
 
-SelectItem::SelectItem(std::string text, bool readonly) {
+
+SelectItem::SelectItem(string text, char shortcut, bool readonly) {
 	this->text = text;	
+	this->shortcut = shortcut;
 	this->readonly = readonly;
 }
 
-SelectMenu::SelectMenu(WINDOW *parent, const vector<SelectItem> *items) {
+SelectMenu::SelectMenu(WINDOW *parent, const vector<SelectItem> items) {
 	// Calculate dimensions
-	const int lines = (2 * items->size());
+	const int lines = (2 * items.size());
 	const int cols = getmaxx(parent);
 	const int y = getmaxy(parent) - lines - 1;
 	const int x = 0;
@@ -20,13 +23,22 @@ SelectMenu::SelectMenu(WINDOW *parent, const vector<SelectItem> *items) {
 	win = derwin(parent, lines, cols, y, x);
 	this->items = items;
 
+	// Create key shortcut vector
+	for (size_t i = 0; i < items.size(); i++) {
+		auto &item = items[i];
+		if (item.shortcut <= 0) {
+			continue;
+		}
+		this->shortcuts.push_back(SelectShortcut_ { .key = item.shortcut, .index = i });
+	}
+
 	// Start at the top for selection
 	// (or at the first selectable item)
 	selection = 0;
-	while (selection < items->size() && (*items)[selection].readonly) {
+	while (selection < items.size() && items[selection].readonly) {
 		selection++;
 	}
-	if ((*items)[selection].readonly) {
+	if (items[selection].readonly) {
 		selection = -1;
 	}
 }
@@ -38,8 +50,8 @@ void SelectMenu::draw() {
 	wmove(win, 0, 0);
 
 	// Draw each option
-	for (auto i = 0; i < items->size(); i++) {
-		auto item = (*items)[i];
+	for (size_t i = 0; i < items.size(); i++) {
+		auto &item = items[i];
 		// Draw separator
 		draw_hline(win);
 
@@ -65,9 +77,19 @@ void SelectMenu::draw() {
 }
 
 bool SelectMenu::next_update() {
-	switch (wgetch(win)) {
+	char c = wgetch(win);
+	// First check if a shortcut was pressed
+	for (auto &shortcut : shortcuts) {
+		if (c == shortcut.key) {
+			selection = shortcut.index;
+			return false;
+		}
+	}
+
+	// Handle navigation
+	switch (c) {
 		case DOWN:
-			if (selection < items->size()-1) {
+			if (selection < items.size()-1) {
 				selection++;
 				touchwin(win);
 			}

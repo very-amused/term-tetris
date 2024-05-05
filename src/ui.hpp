@@ -40,6 +40,8 @@ static const cchar_t BORDER_HLINE_PIPE = _cchar(L'═');
 #define RIGHT 'l'
 #define RETURN '\n'
 
+// Draw a heavy screen border
+void draw_border();
 // Draw a light border, for use with derived (sub) windows
 void draw_border_light(WINDOW *win);
 
@@ -74,9 +76,6 @@ public:
 	void attach_db(std::unique_ptr<DB> &db);
 
 private:
-	// Draw a heavy screen border
-	void draw_border();
-
 	// DB connection
 	std::unique_ptr<DB> db;
 

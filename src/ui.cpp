@@ -1,5 +1,6 @@
 #include "ui.hpp"
 #include <clocale>
+#include <cstdlib>
 #include <cursesw.h>
 #include <string>
 #include <memory>
@@ -66,13 +67,14 @@ void MainScreen::show_next() {
 		}
 		// Show main menu, deferring input handling until the user takes an action prompting a new screen
 		menu->show(screen);
+		break;
 
 	case Screen::Leaderboard:
 		if (!scoreboard) {
 			scoreboard.reset(new ScoreboardScreen);
 		}
 		scoreboard->show(screen, db);
-		return;
+		break;
 
 	case Screen::Game:
 		// Create game screen window if it doesn't exist
@@ -87,7 +89,7 @@ void MainScreen::attach_db(unique_ptr<DB> &db) {
 	this->db.swap(db);
 }
 
-void MainScreen::draw_border() {
+void draw_border() {
 	border_set(&BORDER_VLINE, &BORDER_VLINE,
 			&BORDER_HLINE, &BORDER_HLINE,
 			&BORDER_TL, &BORDER_TR,

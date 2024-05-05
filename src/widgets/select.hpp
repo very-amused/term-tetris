@@ -4,16 +4,25 @@
 #include <string>
 
 struct SelectItem {
-	SelectItem(std::string text, bool readonly = false);
+	SelectItem(std::string text, char shortcut = -1, bool readonly = false);
 
 public:
 	std::string text;	
 	bool readonly;
+	// Optional keyboard shortcut (only considered when > 0) which acts equivalent to selecting and confirming
+	// the item when pressed
+	char shortcut;
+};
+
+// Shortcut tuple of (char, index) used to optimize shortcut handling
+struct SelectShortcut_ {
+	char key;
+	size_t index;
 };
 
 // A selection widget for displaying multiple selectable or highlightable strings
 struct SelectMenu {
-	SelectMenu(WINDOW *parent, const std::vector<SelectItem> *items);
+	SelectMenu(WINDOW *parent, const std::vector<SelectItem> items);
 	~SelectMenu() = default;
 
 public:
@@ -31,8 +40,10 @@ public:
 	int selection;
 
 private:
-	const std::vector<SelectItem> *items;
 	WINDOW *win;
+
+	std::vector<SelectItem> items;
+	std::vector<SelectShortcut_> shortcuts;
 	// Item windows holding only text - used for highlighting via wattr
 	std::vector<WINDOW *> item_windows;
 };

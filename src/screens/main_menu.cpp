@@ -17,6 +17,12 @@ MenuScreen::~MenuScreen() {
 	delwin(this->win);
 }
 
+static const vector<SelectItem> SELECT_OPTS = {
+	SelectItem("Play"),
+	SelectItem("High Scores"),
+	SelectItem("Exit", 'q')
+};
+
 void MenuScreen::show(Screen &screen) {
 	// Draw window border
 	draw_border_light(win);
@@ -25,12 +31,7 @@ void MenuScreen::show(Screen &screen) {
 	refresh();
 
 	// Draw menu options
-	const vector<SelectItem> select_opts = {
-		SelectItem("Play"),
-		SelectItem("High Scores"),
-		SelectItem("Exit")
-	};
-	SelectMenu select_menu(win, &select_opts);
+	SelectMenu select_menu(win, SELECT_OPTS);
 	select_menu.draw();
 	wrefresh(win); // Widget cuts into parent window, so we need a refresh
 

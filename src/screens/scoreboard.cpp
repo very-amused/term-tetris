@@ -23,6 +23,10 @@ ScoreboardScreen::~ScoreboardScreen() {
 	delwin(win);
 }
 
+static const vector<SelectItem> SELECT_OPTS = {
+	SelectItem("Exit", 'q')
+};
+
 void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 	// Draw window border
 	draw_border_light(win);
@@ -30,8 +34,7 @@ void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 	draw_titlebar(win, "Leaderboard");
 	refresh();
 
-	const vector<SelectItem> select_opts = { SelectItem("Exit") };
-	SelectMenu select_menu(win, &select_opts);
+	SelectMenu select_menu(win, SELECT_OPTS);
 	select_menu.draw();
 	wrefresh(win);
 

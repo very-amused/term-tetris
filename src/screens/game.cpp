@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "../ui.hpp"
 
 GameScreen::GameScreen() {
 	// Create window
@@ -12,6 +13,10 @@ GameScreen::~GameScreen() {
 }
 
 void GameScreen::show(Screen &screen) {
-	// TODO
-	screen = Screen::None;
+	// Since the screen is occupying the whole window, we need to redraw the border
+	draw_border();
+	getch();
+
+	// After a game, we return to the main menu
+	screen = Screen::Menu;
 }

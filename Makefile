@@ -1,8 +1,12 @@
-O=-O2
+O=-O3
 CFLAGS = $(O)
 LDFLAGS=-lncursesw -lsqlite3
 CXXFLAGS=$(CFLAGS) -std=gnu++11
-CXX=clang++
+
+# Prefer building with clang
+ifneq (,$(shell which clang))
+	override CXX=clang++
+endif
 
 # Source and object files
 src=$(shell find src/*.cpp) $(shell find src/widgets/*.cpp) $(shell find src/screens/*.cpp)
