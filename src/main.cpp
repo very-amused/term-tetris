@@ -1,12 +1,17 @@
 #include "ui.hpp"
 #include "DB.hpp"
 
+#include <ctime>
 #include <cursesw.h>
 #include <memory>
+#include <stdlib.h>
 
 using std::unique_ptr;
 
 int main() {
+	// Seed RNG
+	srand(time(NULL));
+
 	// Init DB
 	unique_ptr<DB> db(new DB);
 	if (db->init() != 0) {
