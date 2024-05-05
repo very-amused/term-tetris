@@ -1,6 +1,8 @@
 #pragma once
-#include <cursesw.h>
+#include <memory>
+
 #include "../screens.hpp"
+#include "game/grid.hpp"
 
 struct GameScreen {
 	GameScreen();
@@ -14,4 +16,5 @@ public:
 
 private:
 	WINDOW *win;
+	std::unique_ptr<GameGrid> grid;
 };

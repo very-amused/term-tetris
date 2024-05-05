@@ -1,6 +1,5 @@
 #include "game.hpp"
 #include "../ui.hpp"
-#include "game/block-area.hpp"
 
 GameScreen::GameScreen() {
 	// Create window
@@ -16,6 +15,8 @@ GameScreen::~GameScreen() {
 void GameScreen::show(Screen &screen) {
 	// Since the screen is occupying the whole window, we need to redraw the border
 	draw_border();
+
+	// Draw game grid
 
 	// After a game, we return to the main menu
 	werase(win);

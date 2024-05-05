@@ -6,7 +6,13 @@
 
 // A cell used to compose Tetris blocks.
 struct BlockCell {
+	// Construct a solid BlockCell.
+	// y and x are in *cells* and will be scaled by cell w/h
 	BlockCell(WINDOW *block, int y, int x);
+	// Construct an empty BlockCell. Empty cells have no collision,
+	// no visibility, and can overlap + clip
+	BlockCell();
+
 	~BlockCell() = default;
 	BlockCell(const BlockCell &) = delete;
 
@@ -16,13 +22,18 @@ public:
 	// Height of a block cell (lines)
 	static const int HEIGHT = 1;
 
+	// Whether the cell is visible and has collision
+	bool is_solid;
+
 private:
 	WINDOW *win;
 };
 
+typedef bool BlockTemplate[2][4];
+
 // A Tetris block
 struct Block {
-	Block(bool cells[2][4]);
+	Block(const BlockTemplate t);
 	~Block();
 	Block(const Block &) = delete;
 
@@ -37,30 +48,30 @@ public:
 
 private:
 	WINDOW *win;
-	std::unique_ptr<BlockCell> cells[4][4];
+	BlockCell cells[4][4];
 };
 
 // The classic Tetris block set
-static const Block blocks[] = {
-	Block((bool[2][4]){
-			{0, 1, 0, 0},
-			{1, 1, 1, 0}}),
-	Block((bool[2][4]){
-			{1, 1, 1, 0},
-			{0, 0, 1, 0}}),
-	Block((bool[2][4]){
-			{1, 1, 0, 0},
-			{0, 1, 1, 0}}),
-	Block((bool[2][4]){
-			{1, 1, 0, 0},
-			{1, 1, 0, 0}}),
-	Block((bool[2][4]){
-			{0, 1, 1, 0},
-			{1, 1, 0, 0}}),
-	Block((bool[2][4]){
-			{1, 1, 1, 0},
-			{1, 0, 0, 0}}),
-	Block((bool[2][4]){
-			{1, 1, 1, 1},
-			{0, 0, 0, 0}})
+static const bool BLOCK_TEMPLATES[][2][4] = {
+	{
+		{0, 1, 0, 0},
+		{1, 1, 1, 0}},
+	{
+		{1, 1, 1, 0},
+		{0, 0, 1, 0}},
+	{
+		{1, 1, 0, 0},
+		{0, 1, 1, 0}},
+	{
+		{1, 1, 0, 0},
+		{1, 1, 0, 0}},
+	{
+		{0, 1, 1, 0},
+		{1, 1, 0, 0}},
+	{
+		{1, 1, 1, 0},
+		{1, 0, 0, 0}},
+	{
+		{1, 1, 1, 1},
+		{0, 0, 0, 0}}
 };

@@ -1,9 +1,13 @@
 #include "blocks.hpp"
 
-
 BlockCell::BlockCell(WINDOW *block, int y, int x) {
-	// Create derived window
-	win = derwin(block, WIDTH, HEIGHT, y, x);
+	is_solid = true;
+	// Create derived window if the block is solid
+	win = derwin(block, WIDTH, HEIGHT, y * HEIGHT, x * WIDTH);
 }
 
+BlockCell::BlockCell() {
+	is_solid = false;
+	win = NULL;
+}
 
