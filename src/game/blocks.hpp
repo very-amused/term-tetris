@@ -1,8 +1,7 @@
 #pragma once
-#include "direction.hpp"
-
 #include <cursesw.h>
-#include <memory>
+
+#include "motion.hpp"
 
 // A cell used to compose Tetris blocks.
 struct BlockCell {
@@ -34,7 +33,7 @@ typedef bool BlockTemplate[2][4];
 // A Tetris block
 struct Block {
 	Block(const BlockTemplate t);
-	~Block();
+	~Block() = default;
 	Block(const Block &) = delete;
 
 public:
