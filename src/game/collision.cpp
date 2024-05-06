@@ -1,10 +1,11 @@
+#include <algorithm>
+
 #include "collision.hpp"
-#include "blocks.hpp"
 
 CollisionState::CollisionState(int height, int width) {
 	this->height = height;
 	this->width = width;
-	state.resize(height * width, false);
+	reset();
 }
 
 inline long CollisionState::index(int y, int x) const {
@@ -27,4 +28,35 @@ bool CollisionState::collides(Movement &m) const {
 
 inline bool CollisionState::get_cell(int y, int x) const {
 	return state[index(y, x)];
+}
+
+bool CollisionState::reset_cell(int y, int x) {
+	long i = index(y, x);
+	if (i >= state.size()) {
+		return false;
+	}
+
+	state[i] = false;
+
+	return true;
+}
+
+bool CollisionState::reset_row(int y) {
+	using std::fill_n;
+
+	long start = index(y, 0);
+	if (start + width > state.size()) {
+		return false;
+	}
+
+	fill_n(state, width, false);
+
+	return true;
+}
+
+void CollisionState::reset() {
+	using std::fill_n;
+
+	state.clear();
+	state.resize(height * width, false);
 }

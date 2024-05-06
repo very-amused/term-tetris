@@ -25,10 +25,12 @@ public:
 	// Set cell (x, y) to solid. Returns false if collision occured.
 	bool fill_cell(int y, int x);
 
-	// Clear cell (x, y). Returns false if collision occured.
-	bool clear_cell(int y, int x);
-	// Clear row y, returns false if collision occured
-	bool clear_row(int y);
+	// Reset cell (x, y). Returns false if cell is OOB.
+	bool reset_cell(int y, int x);
+	// Reset row y, returns false if row is OOB.
+	bool reset_row(int y);
+	// Reset the whole grid, respecting the currently set dimensions
+	void reset();
 
 private:
 	// Height + width in # of BlockCells
