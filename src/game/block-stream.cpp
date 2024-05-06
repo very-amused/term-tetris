@@ -27,7 +27,7 @@ inline void BlockStream::push_block() {
 	// ref https://en.cppreference.com/w/cpp/container/deque/emplace_back
 	queue.emplace_back(
 			unique_ptr<Block>(
-				new Block(BLOCK_TEMPLATES[rand_distrib(rand_gen)])
+				new Block(BLOCK_TEMPLATES[rand_distrib(*rand_gen.get())])
 				)
 		);
 }

@@ -13,7 +13,10 @@ struct BlockCell {
 	BlockCell();
 
 	~BlockCell() = default;
+	// Make movable but not copyable
 	BlockCell(const BlockCell &) = delete;
+	BlockCell(BlockCell &&) = default;
+	BlockCell &operator=(BlockCell &&) = default;
 
 public:
 	// Width of a block cell (columns)
@@ -23,6 +26,7 @@ public:
 
 	// Whether the cell is visible and has collision
 	bool is_solid;
+	
 
 private:
 	WINDOW *win;

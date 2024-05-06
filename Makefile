@@ -1,5 +1,5 @@
 O=-O3
-CFLAGS = $(O) -g
+CFLAGS = $(O) -Wall
 LDFLAGS=-lncursesw -lsqlite3
 CXXFLAGS=$(CFLAGS) -std=gnu++11
 
@@ -9,7 +9,7 @@ ifneq (,$(shell which clang))
 endif
 
 # Source and object files
-src=$(shell find src/*.cpp) $(shell find src/widgets/*.cpp) $(shell find src/screens/*.cpp)
+src=$(shell find src/ -name *.cpp)
 asm=src/schema.s
 objects=$(src:.cpp=.o)
 

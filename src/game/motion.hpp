@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 enum struct Direction {
 	Up,
 	Down,
@@ -6,8 +8,23 @@ enum struct Direction {
 	Right
 };
 
-// A unit vector movement from (x, y) in direction d
+struct Point { int y, x; };
+
+// A unit vector motion from a set of origin points
 struct Movement {
-	int oy, ox;
+	// A vector containing one or more (y, x) origin points
+	std::vector<Point> origins;
 	Direction d;
+
+	// Get a vector of points describing the results of applying the movement
+	// to each origin point
+	const std::vector<Point> &result();
+
+	// Apply the movement to its origin points.
+	// Multiple calls can be used for iterative motion.
+	void apply();
+
+private:
+	std::vector<Point> result_points; // memoize result points
+	void calculate_results();
 };

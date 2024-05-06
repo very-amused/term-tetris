@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "blocks.hpp"
 #include "motion.hpp"
 
@@ -27,5 +29,9 @@ bool Block::move(Direction d) {
 		return false;
 	}
 
-	// FIXME: collision detection
+	// Create movement struct
+	Movement move;
+	move.d = d;
+	// TODO
+	return false;
 }

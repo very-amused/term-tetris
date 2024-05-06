@@ -9,18 +9,18 @@ struct CollisionState {
 	CollisionState(int height, int width);
 
 public:
-	// Returns whether a movement would cause a collision (overlap/OOB).
-	// If the movement would cause a collision, it must be considered *invalid* and not performed.
-	bool collides(Movement m) const;
+	// Returns whether 1 or more movements would cause a collision (overlap/OOB).
+	// If a collision would result, the entire set of movements must be considered *invalid* and not performed.
+	bool collides(Movement &m) const;
 
 	// Returns whether the cell at (x, y) is full.
 	bool get_cell(int y, int x) const;
 
-	// Updates collision state to reflect a movement. Returns false if a collision occured.
+	// Updates collision state and movement points to reflect a movement. Returns false if a collision occured.
 	//
 	// NOTE: To keep state accurate, this function must perform movements which cause collisions and introduce clipping/OOB.
 	// To prevent collisions, ensure that [collides(m)] == false *before* performing any movement
-	bool apply_movement(Movement m);
+	bool apply_movement(Movement &m);
 
 	// Set cell (x, y) to solid. Returns false if collision occured.
 	bool fill_cell(int y, int x);
@@ -36,6 +36,8 @@ private:
 
 	// 0 if a cell is empty, 1 if it's full
 	std::vector<bool> state;
+
+	long index(int y, int x) const;
 
 	// Whether an overlap clip has occured (debugging purposes)
 	bool has_overlap;
