@@ -30,7 +30,7 @@ fp - frame period
 
 ### Drop
 1. If debounce(input.rotate): block.rotate()
-3. If debounce(i) for i in input.translate for : block.translate()
+3. for i in input.translate: if debounce(i): block.translate(i)
 #### Gravity
 4. input.soft_drop: G.fp = 2, G.fc %= G.fp; else G.fp = {level.G.fp}
 5. If G.fc > 0: G.fc--, goto end
