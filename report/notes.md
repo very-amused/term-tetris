@@ -22,11 +22,10 @@ fc - frame counter
 fp - frame period
 
 ### ARE
-1. If !state.ARE: goto drop
-2. If ARE.fc == 0: G.fc = 0, state.ARE = false, goto drop
-3. If !block: block = genblock()
-4. ARE.fc--
-5. goto end
+1. If !block: block = genblock(), ARE.fc = ARE.fp
+2. If ARE.fc == 0: G.fc = 0, goto drop
+3. ARE.fc--
+4. goto end
 
 ### Drop
 1. If debounce(input.rotate): block.rotate()
@@ -34,7 +33,7 @@ fp - frame period
 #### Gravity
 4. input.soft_drop: G.fp = 2, G.fc %= G.fp; else G.fp = {level.G.fp}
 5. If G.fc > 0: G.fc--, goto end
-6. If !block.drop(): state.ARE = true, ARE.fc = ARE.fp, goto end
+6. If !block.drop(): block = NULL, goto end
 7. G.fc = G.fp
 
 ### End

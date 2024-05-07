@@ -26,7 +26,6 @@ public:
 
 	// Whether the cell is visible and has collision
 	bool is_solid;
-	
 
 private:
 	WINDOW *win;
@@ -48,6 +47,12 @@ public:
 	// returning false if collision occured
 	bool rotate();
 
+	// Attach block to a window for rendering
+	// y/x are in cells and will be scaled
+	void attach(WINDOW *parent, int y, int x);
+	
+	// Render block (requires attach() first)
+	void draw();
 
 private:
 	WINDOW *win;
