@@ -35,3 +35,10 @@ const int GameGrid::height_lines() const {
 const int GameGrid::width_cols() const {
 	return getmaxx(win);
 }
+
+const int GameGrid::offset_y() const {
+	return getbegy(win);
+}
+const int GameGrid::offset_x() const {
+	return getbegx(win);
+}

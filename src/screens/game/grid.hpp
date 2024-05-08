@@ -25,6 +25,11 @@ public:
 	// Get the grid's width in cols
 	const int width_cols() const;
 
+	// Get the grid's absolute y offset in lines
+	const int offset_y() const;
+	// Get the grid's absolute x offset in cols
+	const int offset_x() const;
+
 private:
 	WINDOW *parent;
 	/* A critical runtime invariant is that the dimensions of the grid window

@@ -3,6 +3,9 @@
 
 #include "block.hpp"
 #include "motion.hpp"
+#include "collision.hpp"
+
+struct GameGrid;
 
 // Height of a Tetromino grid (blocks)
 #define TTM_HEIGHT 4
@@ -14,27 +17,34 @@ typedef bool TTMtemplate[2][4];
 // A Tetromino composed of blocks
 struct TTM {
 	TTM(const TTMtemplate t);
-	~TTM() = default;
+	~TTM();
 	TTM(const TTM &) = delete;
 
 public:
 	// Create a pad window and attach to stdscr
-	void attach(const WINDOW *grid);
-	// Render block (requires attach() first)
+	void attach(const GameGrid *grid);
+	// Render TTM (requires attach() first)
 	void draw();
 
-	// Move the block by 1 unit.
-	void move(Direction d);
-	// Rotate the block about its center.
-	bool rotate();
+	// Move the TTM by 1 unit, returning false if collision prevented the movement
+	bool move(Direction d, CollisionState &collision);
+	// Rotate the TTM about its center, returning false if collision prevented the movement
+	bool rotate(CollisionState &collision);
 
 private:
 	// TTM pad windows have the flexibility of arbitrary placement and cropping
 	WINDOW *pad;
-	const WINDOW *grid;
+	const GameGrid *grid;
 
-	// We need to know our Grid's dimensions
-	
+	// TTM grid x,y start coordinates.
+	// (block units, relative to grid)
+	int y, x;
+
+	// TTM collision box x/y exclusive end coordinates.
+	// (block units, relative to grid)
+	const int collision_y() const;
+	const int collision_x() const;
+
 	Block blocks[4][4];
 };
 
