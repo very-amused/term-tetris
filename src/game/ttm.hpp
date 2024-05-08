@@ -1,35 +1,13 @@
 #pragma once
 #include <cursesw.h>
 
+#include "block.hpp"
 #include "motion.hpp"
 
-// Height of a Tetromino block (rows)
-static const int TTM_HEIGHT = 2;
-// Width of a Tetromino block (columnms)
-static const int TTM_WIDTH = 4;
-
-// A Block used to compose TTMs
-struct Block {
-	// Construct a solid Block.
-	// y and x are in *blocks* and will be scaled by block w/h
-	Block(WINDOW *block, int y, int x);
-	// Construct an empty Block. Empty blocks have no collision,
-	// no visibility, and can overlap + clip
-	Block();
-
-	~Block() = default;
-	// Make movable but not copyable
-	Block(const Block &) = delete;
-	Block(Block &&) = default;
-	Block &operator=(Block &&) = default;
-
-public:
-	// Whether the block is visible and has collision
-	bool is_solid;
-
-private:
-	WINDOW *win;
-};
+// Height of a Tetromino grid (blocks)
+#define TTM_HEIGHT 4
+// Width of a Tetromino grid (blocks)
+#define TTM_WIDTH = 4
 
 typedef bool TTMtemplate[2][4];
 
@@ -40,22 +18,23 @@ struct TTM {
 	TTM(const TTM &) = delete;
 
 public:
-	// Move the block by 1 block height,
-	// returning false if collision occured
-	bool move(Direction d);
-	// Rotate the block about its center,
-	// returning false if collision occured
-	bool rotate();
-
-	// Attach block to a window for rendering
-	// y/x are in blocks and will be scaled
-	void attach(WINDOW *parent, int y, int x);
-	
+	// Create a pad window and attach to stdscr
+	void attach(const WINDOW *grid);
 	// Render block (requires attach() first)
 	void draw();
 
+	// Move the block by 1 unit.
+	void move(Direction d);
+	// Rotate the block about its center.
+	bool rotate();
+
 private:
-	WINDOW *win;
+	// TTM pad windows have the flexibility of arbitrary placement and cropping
+	WINDOW *pad;
+	const WINDOW *grid;
+
+	// We need to know our Grid's dimensions
+	
 	Block blocks[4][4];
 };
 

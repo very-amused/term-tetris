@@ -23,9 +23,6 @@ void Movement::calculate_results() {
 
 	Point inc = {0, 0};
 	switch (d) {
-	case Direction::Up:
-		inc.y = -1;
-		break;
 	case Direction::Down:
 		inc.y = 1;
 		break;

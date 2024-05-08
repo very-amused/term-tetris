@@ -15,7 +15,25 @@ struct GameGrid {
 public:
 	void draw(const std::unique_ptr<GameState> &state);
 
+	// Get the grid's height in blocks
+	const int height_blocks() const;
+	// Get the grid's width in blocks
+	const int width_blocks() const;
+
+	// Get the grid's height in lines
+	const int height_lines() const;
+	// Get the grid's width in cols
+	const int width_cols() const;
+
 private:
 	WINDOW *parent;
+	/* A critical runtime invariant is that the dimensions of the grid window
+	are always even multiples of BLOCK_HEIGHT and BLOCK_WIDTH respectively.
+	This invariant is ensured by the constructor requiring block units,
+	which are then scaled to lines/cols.
+	
+	This invariant makes the grid's window the single source of truth for its dimensions,
+	both in block units and in line/col units. This window is additionally the single source
+	of truth for the grid's offsets with respect to its parent window and the screen. */
 	WINDOW *win;
 };
