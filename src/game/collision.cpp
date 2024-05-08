@@ -15,10 +15,10 @@ inline long CollisionState::index(int y, int x) const {
 bool CollisionState::collides(Movement &m) const {
 	auto &result = m.result();
 
-	// If any cells would be moved into an already full cell,
+	// If any blocks would be moved into an already full block,
 	// a collision would occur, making the movement invalid
 	for (const auto p : result) {
-		if (get_cell(p.y, p.x)) {
+		if (get_block(p.y, p.x)) {
 			return true;
 		}
 	}
@@ -26,11 +26,11 @@ bool CollisionState::collides(Movement &m) const {
 	return false;
 }
 
-inline bool CollisionState::get_cell(int y, int x) const {
+bool CollisionState::get_block(int y, int x) const {
 	return state[index(y, x)];
 }
 
-bool CollisionState::reset_cell(int y, int x) {
+bool CollisionState::reset_block(int y, int x) {
 	long i = index(y, x);
 	if (i >= state.size()) {
 		return false;

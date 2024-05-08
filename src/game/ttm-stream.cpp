@@ -7,7 +7,7 @@ TTMstream::TTMstream() {
 	// ref https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution
 	std::random_device rd;
 	rand_gen.reset(new std::mt19937(rd()));
-	static const size_t block_templates_len = sizeof(BLOCK_TEMPLATES) / sizeof(BLOCK_TEMPLATES[0]);
+	static const size_t block_templates_len = sizeof(TTM_TEMPLATES) / sizeof(TTM_TEMPLATES[0]);
 	rand_distrib = std::uniform_int_distribution<size_t>(0, block_templates_len - 1);
 
 	populate();
@@ -26,19 +26,19 @@ void TTMstream::populate() {
 void TTMstream::push_ttm() {
 	// ref https://en.cppreference.com/w/cpp/container/deque/emplace_back
 	queue.emplace_back(
-			unique_ptr<Block>(
-				new Block(BLOCK_TEMPLATES[rand_distrib(*rand_gen.get())])
+			unique_ptr<TTM>(
+				new TTM(TTM_TEMPLATES[rand_distrib(*rand_gen.get())])
 				)
 		);
 }
 
-unique_ptr<Block> TTMstream::pop() {
+unique_ptr<TTM> TTMstream::pop() {
 	auto block = std::move(queue.front());
 	queue.pop_front();
 
 	return block;
 }
 
-const Block *TTMstream::peek_next() const {
+const TTM *TTMstream::peek_next() const {
 	return queue[1].get();
 }

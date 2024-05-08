@@ -31,5 +31,6 @@ src/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o$@ $<
 
 clean:
-	rm -f $(objects) $(tetris)
+	rm -f $(objects) $(tetris); \
+	rm -f $(shell find src/ -name *.o)
 .PHONY: clean

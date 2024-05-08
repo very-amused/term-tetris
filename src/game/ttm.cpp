@@ -1,27 +1,27 @@
-#include "blocks.hpp"
+#include "ttm.hpp"
 #include "motion.hpp"
 
-BlockCell::BlockCell(WINDOW *block, int y, int x) {
+Block::Block(WINDOW *block, int y, int x) {
 	is_solid = true;
 	// Create derived window if the block is solid
 	win = derwin(block, TTM_WIDTH, TTM_HEIGHT, y * TTM_HEIGHT, x * TTM_WIDTH);
 }
 
-BlockCell::BlockCell() {
+Block::Block() {
 	is_solid = false;
 	win = NULL;
 }
 
-Block::Block(const BlockTemplate t) {
-	// Create cell windows
+TTM::TTM(const TTMtemplate t) {
+	// Create block windows
 	for (size_t row = 0; row < 2; row++) {
 		for (size_t col = 0; col < 2; col++) {
-			cells[row][col] = t[row][col] ? BlockCell(win, row, col) : BlockCell();
+			blocks[row][col] = t[row][col] ? Block(win, row, col) : Block();
 		}
 	}
 }
 
-bool Block::move(Direction d) {
+bool TTM::move(Direction d) {
 	// Only upwards movement is valid
 	if (d == Direction::Up) {
 		return false;

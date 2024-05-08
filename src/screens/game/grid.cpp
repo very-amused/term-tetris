@@ -1,14 +1,14 @@
-#include "../../game/blocks.hpp"
+#include "../../game/ttm.hpp"
 #include "grid.hpp"
 #include "../../ui.hpp"
 
 using std::unique_ptr;
 
-GameGrid::GameGrid(WINDOW *parent, int h_cells, int w_cells, int y, int x) {
+GameGrid::GameGrid(WINDOW *parent, int h_blocks, int w_blocks, int y, int x) {
 	this->parent = parent;
 	// Scale h/w
-	int h = h_cells * TTM_HEIGHT;
-	int w = w_cells * TTM_WIDTH;
+	int h = h_blocks * TTM_HEIGHT;
+	int w = w_blocks * TTM_WIDTH;
 
 	// Create window
 	win = newwin(h, w, y, x);

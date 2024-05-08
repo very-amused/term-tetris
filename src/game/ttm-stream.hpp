@@ -3,7 +3,7 @@
 #include <deque>
 #include <random>
 
-#include "blocks.hpp"
+#include "ttm.hpp"
 
 // A stream of random Tetrominos
 struct TTMstream {
@@ -11,10 +11,10 @@ struct TTMstream {
 
 public:
 	// Pop a block of the queue
-	std::unique_ptr<Block> pop();
+	std::unique_ptr<TTM> pop();
 	// Peek at the second-last block in the queue,
 	// used for the 'next' game window.
-	const Block *peek_next() const;
+	const TTM *peek_next() const;
 
 	// Generate blocks as needed to ensure the queue has at least MIN_SIZE blocks.
 	void populate();
@@ -33,5 +33,5 @@ private:
 	// Generate a random Tetromino and push it onto the queue
 	void push_ttm();
 
-	std::deque<std::unique_ptr<Block>> queue;
+	std::deque<std::unique_ptr<TTM>> queue;
 };

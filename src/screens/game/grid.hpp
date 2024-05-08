@@ -6,9 +6,9 @@
 
 // The block grid where gameplay takes place
 struct GameGrid {
-	// h/w are in BlockCell units and are scaled
+	// h/w are in Block units and are scaled
 	// y/x are in lines/cols and are *not* scaled
-	GameGrid(WINDOW *parent, int h_cells, int w_cells, int y, int x);
+	GameGrid(WINDOW *parent, int h_blocks, int w_blocks, int y, int x);
 	~GameGrid() = default;
 	GameGrid(const GameGrid &) = delete;
 
