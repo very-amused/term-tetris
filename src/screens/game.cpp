@@ -28,8 +28,8 @@ void GameScreen::play(Screen &screen) {
 
 	// Draw game grid
 	if (!grid) {
-		static const int h = H_BLOCKS * TTM_HEIGHT,
-								 		 w = W_BLOCKS * TTM_WIDTH;
+		static const int h = (H_BLOCKS * BLOCK_HEIGHT) + 2, // account for borders to keep centering accurate
+								 		 w = (W_BLOCKS * BLOCK_WIDTH) + 2;
 		grid.reset(new GameGrid(win, H_BLOCKS, W_BLOCKS, y_centered(h), x_centered(w)));
 	}
 	grid->draw(state);

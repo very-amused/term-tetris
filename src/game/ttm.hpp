@@ -10,9 +10,15 @@ struct GameGrid;
 // Height of a Tetromino grid (blocks)
 #define TTM_HEIGHT 4
 // Width of a Tetromino grid (blocks)
-#define TTM_WIDTH = 4
+#define TTM_WIDTH 4
 
-typedef bool TTMtemplate[2][4];
+
+struct TTMtemplate {
+	bool blocks[2][4];
+	// (y,x) origin coords for clockwise rotation.
+	// negative coords denote that rotation is not permitted
+	short origin[2];
+};
 
 // A Tetromino composed of blocks
 struct TTM {
@@ -40,35 +46,43 @@ private:
 	// (block units, relative to grid)
 	int y, x;
 
-	// TTM collision box x/y exclusive end coordinates.
+	// Collision box x/y start coordinates - inclusive
+	// (block units, relative to grid)
+	const int y_start() const;
+	const int x_start() const;
+
+	// Collision box x/y end coordinates - exclusive
 	// (block units, relative to grid)
 	const int collision_y() const;
 	const int collision_x() const;
 
 	Block blocks[4][4];
+	// (y, x) origin  coords for clockwise rotation.
+	// negative coords denote that rotation is not permitted
+	short origin[2];
 };
 
 // The classic Tetris Tetromino set
-static const bool TTM_TEMPLATES[][2][4] = {
+static const TTMtemplate TTM_TEMPLATES[] = {
 	{
-		{0, 1, 0, 0},
-		{1, 1, 1, 0}},
+		{{1, 1, 1, 0},
+		 {0, 1, 0, 0}}, {0, 1}},
 	{
-		{1, 1, 1, 0},
-		{0, 0, 1, 0}},
+		{{1, 1, 1, 0},
+		 {0, 0, 1, 0}}, {0, 1}},
 	{
-		{1, 1, 0, 0},
-		{0, 1, 1, 0}},
+		{{1, 1, 0, 0},
+		 {0, 1, 1, 0}}, {0, 1}},
 	{
-		{1, 1, 0, 0},
-		{1, 1, 0, 0}},
+		{{1, 1, 0, 0},
+		 {1, 1, 0, 0}}, {-1, -1}},
 	{
-		{0, 1, 1, 0},
-		{1, 1, 0, 0}},
+		{{0, 1, 1, 0},
+		 {1, 1, 0, 0}}, {0, 1}},
 	{
-		{1, 1, 1, 0},
-		{1, 0, 0, 0}},
+		{{1, 1, 1, 0},
+		 {1, 0, 0, 0}}, {0, 1}},
 	{
-		{1, 1, 1, 1},
-		{0, 0, 0, 0}}
+		{{1, 1, 1, 1},
+		 {0, 0, 0, 0}}, {0, 2}}
 };

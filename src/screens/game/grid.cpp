@@ -8,18 +8,43 @@ using std::unique_ptr;
 
 GameGrid::GameGrid(WINDOW *parent, int h_blocks, int w_blocks, int y, int x) {
 	this->parent = parent;
-	// Scale h/w
-	int h = h_blocks * BLOCK_HEIGHT;
-	int w = w_blocks * BLOCK_WIDTH;
+	// Scale h/w and account for border
+	int h = (h_blocks * BLOCK_HEIGHT) + 2;
+	int w = (w_blocks * BLOCK_WIDTH) + 2;
 
 	// Create window
 	win = newwin(h, w, y, x);
+	if (!win) {
+		printf("Panic!!!!\n");
+	}
 }
 
 void GameGrid::draw(const unique_ptr<GameState> &state) {
 	draw_border_light(win);
-	wgetch(win);
-	// TODO		
+	touchwin(win);
+	wrefresh(win);
+	getch();
+	// TODO
+}
+
+const int GameGrid::offset_y() const {
+	return getbegy(win) + 1; // account for border
+}
+const int GameGrid::offset_x() const {
+	return getbegx(win) + 1;
+}
+const int GameGrid::end_y() const {
+	return getmaxy(win) - 1;
+}
+const int GameGrid::end_x() const {
+	return getmaxx(win) - 1;
+}
+
+const int GameGrid::height_lines() const {
+	return end_y() - offset_y();
+}
+const int GameGrid::width_cols() const {
+	return end_x() - offset_x();
 }
 
 const int GameGrid::height_blocks() const {
@@ -29,16 +54,3 @@ const int GameGrid::width_blocks() const {
 	return width_cols() / BLOCK_WIDTH;
 }
 
-const int GameGrid::height_lines() const {
-	return getmaxy(win);
-}
-const int GameGrid::width_cols() const {
-	return getmaxx(win);
-}
-
-const int GameGrid::offset_y() const {
-	return getbegy(win);
-}
-const int GameGrid::offset_x() const {
-	return getbegx(win);
-}

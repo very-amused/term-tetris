@@ -5,6 +5,7 @@
 #include "../../game/state.hpp"
 
 // The block grid where gameplay takes place
+// NOTE: borders are internally accounted for
 struct GameGrid {
 	// h/w are in Block units and are scaled
 	// y/x are in lines/cols and are *not* scaled
@@ -15,20 +16,23 @@ struct GameGrid {
 public:
 	void draw(const std::unique_ptr<GameState> &state);
 
-	// Get the grid's height in blocks
-	const int height_blocks() const;
-	// Get the grid's width in blocks
-	const int width_blocks() const;
+	// Get the grid's absolute y offset in lines
+	const int offset_y() const;
+	// Get the grid's absolute x offset in cols
+	const int offset_x() const;
+	// Get the grid's absolute y end coord in lines
+	const int end_y() const;
+	// Get the grid's absolute x end coord in cols
+	const int end_x() const;
 
 	// Get the grid's height in lines
 	const int height_lines() const;
 	// Get the grid's width in cols
 	const int width_cols() const;
-
-	// Get the grid's absolute y offset in lines
-	const int offset_y() const;
-	// Get the grid's absolute x offset in cols
-	const int offset_x() const;
+	// Get the grid's height in blocks
+	const int height_blocks() const;
+	// Get the grid's width in blocks
+	const int width_blocks() const;
 
 private:
 	WINDOW *parent;
