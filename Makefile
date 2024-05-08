@@ -1,5 +1,5 @@
 O=-O3
-CFLAGS = $(O) -Wall
+CFLAGS = $(O) -flto -Wall
 LDFLAGS=-lncursesw -lsqlite3
 CXXFLAGS=$(CFLAGS) -std=gnu++11
 
@@ -22,6 +22,10 @@ tetris=$(outdir)/tetris
 
 $(tetris): $(objects) $(asm)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o$@ $^
+
+run: $(tetris)
+	./$<
+.PHONY: run
 
 src/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o$@ $<

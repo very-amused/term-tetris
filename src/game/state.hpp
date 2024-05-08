@@ -3,11 +3,17 @@
 
 #include "collision.hpp"
 #include "blocks.hpp"
+#include "ttm-stream.hpp"
 
 struct GameState {
-	GameState();
+	// Initialize game state (including RNG) for play
+	GameState(int h_blocks, int w_blocks);
 
+	// Current Tetromino
+	std::unique_ptr<Block> current_ttm;
+	// Stream/queue used for TTM (piece) gen
+	std::unique_ptr<TTMstream> ttm_stream;
+	// Collision bitmap
 	std::unique_ptr<CollisionState> collision;
-	std::unique_ptr<Block> current_piece;
 	// TODO: input state
 };

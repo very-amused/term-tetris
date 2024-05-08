@@ -12,18 +12,29 @@ GameScreen::~GameScreen() {
 	delwin(this->win);
 }
 
-void GameScreen::show() {
+// Grid height in blocks
+static const int H_BLOCKS = 20;
+// Grid width in blocks
+static const int W_BLOCKS = 10;
+
+void GameScreen::play(Screen &screen) {
 	// Since the screen is occupying the whole window, we need to redraw the border
 	draw_border();
+	refresh();
+	// Initialize state if needed
+	if (!state) {
+		state.reset(new GameState(H_BLOCKS, W_BLOCKS));
+	}
 
 	// Draw game grid
 	if (!grid) {
-		const int h_blocks = 20, w_blocks = 10;
-		const int h = h_blocks * BlockCell::HEIGHT, w = w_blocks * BlockCell::WIDTH;
-		grid.reset(new GameGrid(win, h_blocks, w_blocks, y_centered(h), x_centered(w)));
+		static const int h = H_BLOCKS * TTM_HEIGHT,
+								 		 w = W_BLOCKS * TTM_WIDTH;
+		grid.reset(new GameGrid(win, H_BLOCKS, W_BLOCKS, y_centered(h), x_centered(w)));
 	}
+	grid->draw(state);
 
 	// After a game, we return to the main menu
-	werase(win);
-	wrefresh(win);
+	wclear(win);
+	screen = Screen::Menu;
 }

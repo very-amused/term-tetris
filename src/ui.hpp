@@ -53,6 +53,8 @@ void draw_hline(WINDOW *win,
 		const cchar_t &BORDER_HLINE = BORDER_HLINE_LIGHT,
 		const cchar_t &BORDER_MR = BORDER_MR_LIGHT);
 void draw_titlebar(WINDOW *win, std::string title);
+// subwin/derwin refresh
+void swrefresh(WINDOW *parent, WINDOW *sw);
 
 // Main game menu + high scores
 struct MenuScreen;

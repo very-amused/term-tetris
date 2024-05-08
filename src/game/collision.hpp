@@ -6,7 +6,7 @@
 // 2D grid collision state.
 struct CollisionState {
 	// Initialize collision state for a HxW grid
-	CollisionState(int height, int width);
+	CollisionState(int h_blocks, int w_blocks);
 
 public:
 	// Returns whether 1 or more movements would cause a collision (overlap/OOB).

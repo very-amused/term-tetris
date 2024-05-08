@@ -95,7 +95,6 @@ void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 		select_menu->draw();
 	}
 
-	werase(win);
-	wrefresh(win);
+	wclear(win);
 	screen = Screen::Menu;
 }

@@ -44,6 +44,8 @@ void MenuScreen::show(Screen &screen) {
 	}
 
 	// Handle final selection
+	wclear(win);
+	wrefresh(win);
 	switch (select_menu->selection) {
 	case 0:
 		// Play

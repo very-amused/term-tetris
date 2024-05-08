@@ -1,12 +1,10 @@
-#include <algorithm>
-
 #include "blocks.hpp"
 #include "motion.hpp"
 
 BlockCell::BlockCell(WINDOW *block, int y, int x) {
 	is_solid = true;
 	// Create derived window if the block is solid
-	win = derwin(block, WIDTH, HEIGHT, y * HEIGHT, x * WIDTH);
+	win = derwin(block, TTM_WIDTH, TTM_HEIGHT, y * TTM_HEIGHT, x * TTM_WIDTH);
 }
 
 BlockCell::BlockCell() {

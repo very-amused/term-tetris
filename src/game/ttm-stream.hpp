@@ -5,9 +5,9 @@
 
 #include "blocks.hpp"
 
-// A stream of random Tetris blocks
-struct BlockStream {
-	BlockStream();
+// A stream of random Tetrominos
+struct TTMstream {
+	TTMstream();
 
 public:
 	// Pop a block of the queue
@@ -15,6 +15,9 @@ public:
 	// Peek at the second-last block in the queue,
 	// used for the 'next' game window.
 	const Block *peek_next() const;
+
+	// Generate blocks as needed to ensure the queue has at least MIN_SIZE blocks.
+	void populate();
 
 private:
 	// The absolute minimum size the queue is allowed to shrink to
@@ -27,11 +30,8 @@ private:
 	std::unique_ptr<std::mt19937> rand_gen;
 	std::uniform_int_distribution<size_t> rand_distrib;
 
-	// Generate blocks as needed to ensure the queue has at least MIN_SIZE blocks.
-	void fill();
-
-	// Generate a random block and push it onto the queue
-	void push_block();
+	// Generate a random Tetromino and push it onto the queue
+	void push_ttm();
 
 	std::deque<std::unique_ptr<Block>> queue;
 };

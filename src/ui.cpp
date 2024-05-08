@@ -79,7 +79,7 @@ void MainScreen::show_next() {
 		if (!game) {
 			game.reset(new GameScreen);
 		}
-		game->show(screen);
+		game->play(screen);
 	}
 }
 
@@ -117,6 +117,11 @@ void draw_hline(WINDOW *win,
 	whline_set(win, &BORDER_HLINE, getmaxx(win) - 2);
 	wmove(win, getcury(win), getmaxx(win) - 1);
 	wadd_wch(win, &BORDER_MR);
+}
+
+void swrefresh(WINDOW *parent, WINDOW *sw) {
+	touchwin(parent);
+	wrefresh(sw);
 }
 
 void draw_titlebar(WINDOW *win, string title) {

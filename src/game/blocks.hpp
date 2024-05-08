@@ -3,6 +3,11 @@
 
 #include "motion.hpp"
 
+// Height of a Tetromino block (rows)
+static const int TTM_HEIGHT = 2;
+// Width of a Tetromino block (columnms)
+static const int TTM_WIDTH = 4;
+
 // A cell used to compose Tetris blocks.
 struct BlockCell {
 	// Construct a solid BlockCell.
@@ -19,11 +24,6 @@ struct BlockCell {
 	BlockCell &operator=(BlockCell &&) = default;
 
 public:
-	// Width of a block cell (columns)
-	static const int WIDTH = 2;
-	// Height of a block cell (lines)
-	static const int HEIGHT = 1;
-
 	// Whether the cell is visible and has collision
 	bool is_solid;
 

@@ -13,8 +13,9 @@ struct GameGrid {
 	GameGrid(const GameGrid &) = delete;
 
 public:
+	void draw(const std::unique_ptr<GameState> &state);
 
 private:
+	WINDOW *parent;
 	WINDOW *win;
-	std::unique_ptr<GameState> game_state;
 };

@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <stdlib.h>
 
 #include "collision.hpp"
 
@@ -42,21 +42,19 @@ bool CollisionState::reset_cell(int y, int x) {
 }
 
 bool CollisionState::reset_row(int y) {
-	using std::fill_n;
-
 	long start = index(y, 0);
 	if (start + width > state.size()) {
 		return false;
 	}
 
-	fill_n(state, width, false);
+	for (size_t i = start; i < width; i++) {
+		state[i] = false;
+	}
 
 	return true;
 }
 
 void CollisionState::reset() {
-	using std::fill_n;
-
 	state.clear();
 	state.resize(height * width, false);
 }

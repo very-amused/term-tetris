@@ -1,8 +1,8 @@
-#include "block-stream.hpp"
+#include "ttm-stream.hpp"
 
 using std::unique_ptr;
 
-BlockStream::BlockStream() {
+TTMstream::TTMstream() {
 	// Seed RNG
 	// ref https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution
 	std::random_device rd;
@@ -10,20 +10,20 @@ BlockStream::BlockStream() {
 	static const size_t block_templates_len = sizeof(BLOCK_TEMPLATES) / sizeof(BLOCK_TEMPLATES[0]);
 	rand_distrib = std::uniform_int_distribution<size_t>(0, block_templates_len - 1);
 
-	fill();
+	populate();
 }
 
-void BlockStream::fill() {
+void TTMstream::populate() {
 	if (queue.size() > MIN_SIZE) {
 		return;
 	}
 
 	for (size_t i = 0; i < INCREMENT; i++) {
-		push_block();
+		push_ttm();
 	}
 }
 
-inline void BlockStream::push_block() {
+void TTMstream::push_ttm() {
 	// ref https://en.cppreference.com/w/cpp/container/deque/emplace_back
 	queue.emplace_back(
 			unique_ptr<Block>(
@@ -32,13 +32,13 @@ inline void BlockStream::push_block() {
 		);
 }
 
-unique_ptr<Block> BlockStream::pop() {
+unique_ptr<Block> TTMstream::pop() {
 	auto block = std::move(queue.front());
 	queue.pop_front();
 
 	return block;
 }
 
-const Block *BlockStream::peek_next() const {
+const Block *TTMstream::peek_next() const {
 	return queue[1].get();
 }
