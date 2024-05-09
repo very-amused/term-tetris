@@ -1,5 +1,6 @@
 #pragma once
 #include <cursesw.h>
+#include <memory>
 
 #include "block.hpp"
 #include "motion.hpp"
@@ -25,6 +26,12 @@ struct BlockPoint {
 	Block *block;
 };
 
+// A (coord, Block *) vector pair used for transformations
+struct BlockPoints {
+	std::vector<Point> coords;	
+	std::vector<Block *> blocks;
+};
+
 // A Tetromino composed of blocks
 struct TTM {
 	TTM(const TTMtemplate t);
@@ -32,15 +39,15 @@ struct TTM {
 	TTM(const TTM &) = delete;
 
 public:
-	// Create a pad window and attach to stdscr
-	void attach(const GameGrid *grid);
+	// Attach grid to graphics and collision state
+	void attach(const GameGrid *grid, std::unique_ptr<CollisionState> &collision);
 	// Return whether the TTM has been attached for rendering
 	bool attached();
 	// Render TTM (requires attach() first)
 	void draw();
 
 	// Move the TTM by 1 unit, returning false if collision prevented the movement
-	bool move(Direction d, CollisionState &collision);
+	bool move(Direction d, std::unique_ptr<CollisionState> &collision);
 	// Rotate the TTM about its center, returning false if collision prevented the movement
 	bool rotate(CollisionState &collision);
 
@@ -63,8 +70,8 @@ private:
 	const int collision_y() const;
 	const int collision_x() const;
 
-	// Get solid block coordinates for transformation
-	std::vector<BlockPoint> block_coords();
+	// Get solid block points for transforms
+	BlockPoints block_points();
 
 	Block blocks[4][4];
 	// (y, x) origin  coord for clockwise rotation.

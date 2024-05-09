@@ -9,19 +9,18 @@ struct CollisionState {
 	CollisionState(int h_blocks, int w_blocks);
 
 public:
-	// Returns whether 1 or more movements would cause a collision (overlap/OOB).
-	// If a collision would result, the entire set of movements must be considered *invalid* and not performed.
-	bool collides(Movement &m) const;
-
-	// Returns whether the block at (x, y) is full.
-	bool get_block(int y, int x) const;
-
 	// Updates collision state and movement points to reflect a movement. Returns false if a collision occured.
 	//
 	// NOTE: To keep state accurate, this function must perform movements which cause collisions and introduce clipping/OOB.
 	// To prevent collisions, ensure that [collides(m)] == false *before* performing any movement
 	bool apply_movement(Movement &m);
 
+	// Returns whether 1 or more movements would cause a collision (overlap/OOB).
+	// If a collision would result, the entire set of movements must be considered *invalid* and not performed.
+	bool collides(Movement &m) const;
+
+	// Returns whether the block at (x, y) is full.
+	bool get_block(int y, int x) const;
 	// Set block (x, y) to solid. Returns false if collision occured.
 	bool fill_block(int y, int x);
 

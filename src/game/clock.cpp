@@ -4,14 +4,20 @@
 #include <thread>
 
 using std::unique_ptr;
-using std::chrono::duration;
-using std::chrono::time_point;
 using std::chrono::steady_clock;
-using std::this_thread::sleep_until;
 
 GameClock::GameClock() {
-	are.fp = 300;
-	// Initialze tick period
+	// Init ARE
+	are.fp = 18;
+
+	// Init gravity
+#ifdef DEBUG
+	gravity.fp = 5;
+#else
+	gravity.fp = 30;
+#endif
+
+	// Init ticks
 	last_tick = last_tick.min(); // Set last_tick to zero value
 }
 
@@ -29,7 +35,7 @@ void GameClock::tick(unique_ptr<GameState> &state, const unique_ptr<GameGrid> &g
 	// Generate a new block and start ARE if needed
 	if (!state->current_ttm) {
 		state->current_ttm = state->ttm_stream->pop();
-		state->current_ttm->attach(grid.get());
+		state->current_ttm->attach(grid.get(), state->collision);
 		are.fc = are.fp;
 	}
 	// Ignore input during ARE. No time to get competition-level fancy
@@ -40,4 +46,13 @@ void GameClock::tick(unique_ptr<GameState> &state, const unique_ptr<GameGrid> &g
 
 	/// Drop
 	// FIXME: next step is inputs + debouncing
+
+	if (gravity.fc > 0) {
+		gravity.fc--;
+		return;
+	}
+	if (!state->current_ttm->move(Direction::Down, state->collision)) {
+		(void)state->current_ttm.release(); // FIXME: memory leak
+		state->current_ttm.reset(NULL);
+	}
 }

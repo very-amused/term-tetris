@@ -21,7 +21,7 @@ private:
 	static const size_t TICK_FREQ = 60;
 	// ref https://www.freecodecamp.org/news/cpp-std-chrono-api/
 	// This article is terrible
-	static constexpr std::chrono::duration<int, std::ratio<1, TICK_FREQ>> TICK_PERIOD{1}; // TODO: remove satanspawn constexpr
+	const std::chrono::duration<int, std::ratio<1, TICK_FREQ>> TICK_PERIOD{1};
 	std::chrono::time_point<std::chrono::steady_clock> last_tick;
 
 	FrameCounter are;

@@ -21,10 +21,9 @@ GameGrid::GameGrid(WINDOW *parent, int h_blocks, int w_blocks, int y, int x) {
 
 void GameGrid::draw(const unique_ptr<GameState> &state) {
 	draw_border_light(win);
-	touchwin(win);
+	swrefresh(parent, win);
 
 	state->current_ttm->draw();
-	wrefresh(win);
 }
 
 const int GameGrid::offset_y() const {

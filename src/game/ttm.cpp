@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <memory>
 #include <cursesw.h>
 
 #include "ttm.hpp"
@@ -6,6 +7,8 @@
 #include "collision.hpp"
 #include "../ui.hpp"
 #include "../screens/game/grid.hpp"
+
+using std::unique_ptr;
 
 TTM::TTM(const TTMtemplate t) {
 	pad = NULL;
@@ -60,7 +63,7 @@ const int TTM::collision_x() const {
 	return x;
 }
 
-void TTM::attach(const GameGrid *grid) {
+void TTM::attach(const GameGrid *grid, unique_ptr<CollisionState> &collision) {
 	this->grid = grid;
 	// Create 4x4 pad
 	pad = newpad(4 * BLOCK_HEIGHT, 4 * BLOCK_WIDTH);
@@ -68,10 +71,19 @@ void TTM::attach(const GameGrid *grid) {
 	x =  wx_centered(grid->width_cols(), getmaxx(pad)) / BLOCK_WIDTH;
 	y = -collision_y();
 
+	// Initialize collision
+	collision.
+
 	// Attach blocks
 	for (int row = 0; row < collision_y(); row++) {
 		for (int col = 0; col < collision_x(); col++) {
-			blocks[row][col].attach(pad, row, col);
+			auto &b = blocks[row][col];
+			if (!b.solid) {
+				continue;
+			}
+
+			b.attach(pad, row, col);
+			collision->fill_block(y + row, x + col);
 		}
 	}
 }
@@ -98,7 +110,6 @@ void TTM::draw() {
 	const int x_maxcol = grid->offset_x() + ((x + collision_x()) * BLOCK_WIDTH);
 
 	// Use prefresh to render
-	//draw_border_light(pad); // FIXME: debug
 	for (auto &row : blocks) {
 		for (auto &blk : row) {
 			blk.draw();
@@ -108,15 +119,32 @@ void TTM::draw() {
 			y_minrow, x_mincol, y_maxrow, x_maxcol);
 }
 
-bool TTM::move(Direction d, CollisionState &collision) {
+bool TTM::move(Direction d, unique_ptr<CollisionState> &collision) {
 	// Create movement struct
 	Movement move;
 	move.d = d;
-	// Append origin vec
+	auto points = block_points();
+	move.origins = std::move(points.coords);
+	if (collision->collides(move)) {
+		return false;
+	}
 
-	// TODO
+	// Update collision state
+	collision->apply_movement(move);
 
-	return false;
+	// Basic transformations are simple: translate the TTM grid
+	switch (move.d) {
+	case Direction::Down:
+		y++;
+		break;
+	case Direction::Left:
+		x--;
+		break;
+	case Direction::Right:
+		x++;
+	}
+
+	return true;
 }
 
 bool TTM::rotate(CollisionState &collision) {
