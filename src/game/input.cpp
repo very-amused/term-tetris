@@ -1,9 +1,13 @@
 #include <cursesw.h>
-#include <algorithm>
 
 #include "input.hpp"
 #include "motion.hpp"
 #include "../keybinds.hpp"
+
+struct DirectionInput {
+	int key;
+	Direction d;
+};
 
 GameInput::GameInput(WINDOW *win) {
 	this->win = win;
@@ -18,7 +22,8 @@ GameInput::~GameInput() {
 }
 
 void GameInput::getkeys() {
-	// Flush old input
+	// Move previous frame's keypresses, clear for current frame
+	keys_prev = std::move(keys);
 	keys.clear();
 
 	// Store which keys are pressed in the current frame
@@ -28,12 +33,8 @@ void GameInput::getkeys() {
 	}
 }
 
-struct DirectionInput {
-	int key;
-	Direction d;
-};
 
-Direction GameInput::get_direction() {
+Direction GameInput::get_direction(bool debounce_prev) {
 	// Prioritize soft-drop input when checking directions
 	static const DirectionInput check_directions[] = {
 		{DOWN, Direction::Down},
@@ -44,7 +45,8 @@ Direction GameInput::get_direction() {
 
 	for (size_t i = 0; i < check_directions_len; i++) {
 		auto input = check_directions[i];
-		if (keys[input.key]) {
+		if (keys[input.key] &&
+				(!debounce_prev || !keys_prev[input.key])) {
 			return input.d;
 		}
 	}

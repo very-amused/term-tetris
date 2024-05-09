@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+// A translational movement direction
 enum struct Direction {
 	None,
 	Down,

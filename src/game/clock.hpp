@@ -2,8 +2,11 @@
 #include <chrono>
 #include <ratio>
 
+#include "input.hpp"
 #include "state.hpp"
 #include "../screens/game/grid.hpp"
+
+#include "clock/tick.hpp"
 
 // Framecounter with associated frame period
 struct FrameCounter {
@@ -15,16 +18,9 @@ struct GameClock {
 
 
 public:
-	void tick(std::unique_ptr<GameState> &state, const std::unique_ptr<GameGrid> &grid);
+	void tick(std::unique_ptr<GameState> &state, std::unique_ptr<GameInput> &input, const std::unique_ptr<GameGrid> &grid);
 
 private:
-	// Set a fixed 60hz clock rate
-	static const size_t TICK_FREQ = 60;
-
-	// ref https://www.freecodecamp.org/news/cpp-std-chrono-api/
-	// This article is terrible ^
-	// ref https://en.cppreference.com/w/cpp/chrono/duration
-	const std::chrono::duration<int, std::ratio<1, TICK_FREQ>> TICK_PERIOD{1};
 	std::chrono::time_point<std::chrono::steady_clock> last_tick;
 
 	FrameCounter are;

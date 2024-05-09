@@ -22,7 +22,8 @@ GameClock::GameClock() {
 	last_tick = last_tick.min(); // Set last_tick to zero value
 }
 
-void GameClock::tick(unique_ptr<GameState> &state, const unique_ptr<GameGrid> &grid) {
+
+void GameClock::tick(std::unique_ptr<GameState> &state, std::unique_ptr<GameInput> &input, const std::unique_ptr<GameGrid> &grid) {
 	// Sleep until ready for the next tick to start
 	unsigned int ticks_elapsed = 1;
 	if (last_tick != last_tick.min()) {
@@ -46,8 +47,17 @@ void GameClock::tick(unique_ptr<GameState> &state, const unique_ptr<GameGrid> &g
 	}
 
 	/// Drop
-	// FIXME: inputs + debouncing
-	// TODO: soft drop
+	// Apply soft drop input if present
+	input->getkeys();
+
+	// TODO: softdrop is experiencing a hold delay and should not be
+	size_t gravity_fp;
+	if (input->get_direction(false) == Direction::Down) {
+		gravity_fp = G_FP_SOFTDROP;
+		gravity.fc %= gravity_fp;
+	} else {
+		gravity_fp = gravity.fp;
+	}
 	if (gravity.fc > 0) {
 		gravity.fc -= ticks_elapsed;
 		return;
@@ -56,5 +66,5 @@ void GameClock::tick(unique_ptr<GameState> &state, const unique_ptr<GameGrid> &g
 		state->placed_ttms.push_front(state->current_ttm.release());
 		return;
 	}
-	gravity.fc = gravity.fp;
+	gravity.fc = gravity_fp;
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include <cursesw.h>
 #include <unordered_map>
-#include <vector>
 
 #include "motion.hpp"
 
@@ -16,11 +15,16 @@ struct GameInput {
 
 	// Return the currently active direction input to apply,
 	// or Direction::None
-	Direction get_direction();
+	Direction get_direction(bool debounce_prev = false);
 
 private:
-	// Input buffer holding currently pressed keys
-	std::unordered_map<int, bool> keys;		
+	typedef std::unordered_map<int, bool> keymap_t;
+
+	// Input buffer holding keypresses for the current frame
+	keymap_t keys;		
+	// Input buffer holding keypresses for the previous frame
+	keymap_t keys_prev;
+
 
 	WINDOW *win;
 };

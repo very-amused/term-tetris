@@ -45,7 +45,7 @@ void GameScreen::play(Screen &screen) {
 	GameClock clock;
 	while (!state->done) {
 		// During each tick, the clock gets r/w access to state and ro access to grid
-		clock.tick(state, grid);
+		clock.tick(state, input, grid);
 		grid->draw(state);
 	}
 
