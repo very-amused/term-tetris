@@ -3,6 +3,7 @@
 #include "ttm-stream.hpp"
 #include <chrono>
 #include <cstdlib>
+#include <cursesw.h>
 #include <thread>
 
 using std::unique_ptr;
@@ -52,8 +53,7 @@ void GameClock::tick(unique_ptr<GameState> &state, const unique_ptr<GameGrid> &g
 		return;
 	}
 	if (!state->current_ttm->move(Direction::Down, state->collision)) {
-		(void)state->current_ttm.release(); // Memory leak
-		state->current_ttm.reset(NULL);
+		state->placed_ttms.push_front(state->current_ttm.release());
 		return;
 	}
 	gravity.fc = gravity.fp;

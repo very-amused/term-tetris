@@ -1,4 +1,5 @@
 #include <cursesw.h>
+#include <iterator>
 
 #include "../../game/block.hpp"
 #include "grid.hpp"
@@ -20,11 +21,19 @@ GameGrid::GameGrid(WINDOW *parent, int h_blocks, int w_blocks, int y, int x) {
 }
 
 void GameGrid::draw(const unique_ptr<GameState> &state) {
+	// Draw border
 	draw_border_light(win);
 	swrefresh(parent, win);
+
 	if (state->current_ttm) {
 		state->current_ttm->draw();
 	} 
+
+	// Draw placed TTMs
+	for (auto &t : state->placed_ttms) {
+		t->draw();
+	}
+
 }
 
 const int GameGrid::offset_y() const {

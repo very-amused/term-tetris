@@ -16,6 +16,8 @@ struct GameState {
 
 	// Current Tetromino
 	std::unique_ptr<TTM> current_ttm;
+	// Placed Tetrominos
+	std::deque<TTM *> placed_ttms; // FIXME: these leak
 	// Stream/queue used for TTM (piece) gen
 	std::unique_ptr<TTMstream> ttm_stream;
 	// Collision bitmap

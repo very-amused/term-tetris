@@ -26,9 +26,8 @@ public:
 	// Whether the block is visible and has collision
 	bool solid;
 
-	// Attach to parent pad and collision state at (x, y).
-	// x/y are in blocks and will be scaled
-	void attach(WINDOW *parent, std::unique_ptr<CollisionState> &collision, Point p);
+	// Attach to parent pad at (y, x) relative
+	void attach(WINDOW *parent, int y, int x);
 
 	void draw();
 

@@ -11,7 +11,7 @@ struct CollisionState {
 public:
 	// Returns whether 1 or more movements would cause a collision (overlap/OOB).
 	// If a collision would result, the entire set of movements must be considered *invalid* and not performed.
-	bool collides(Movement &m) const;
+	bool collides(Movement &m);
 
 	// Returns whether the block at (x, y) is full.
 	bool get_block(int y, int x) const;
@@ -40,6 +40,7 @@ private:
 	std::vector<bool> state;
 
 	long index(int y, int x) const;
+	bool valid_index(const long i) const;
 
 	// Whether an overlap clip has occured (debugging purposes)
 	bool has_overlap;

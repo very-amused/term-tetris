@@ -11,28 +11,42 @@ CollisionState::CollisionState(int height, int width) {
 inline long CollisionState::index(int y, int x) const {
 	return (width * (y + 2)) + x;
 }
+inline bool CollisionState::valid_index(long i) const {
+	return i >= 0 && i < state.size();
+}
 
-bool CollisionState::collides(Movement &m) const {
-	auto &result = m.result();
-
+bool CollisionState::collides(Movement &m) {
 	// If any blocks would be moved into an already full block,
 	// a collision would occur, making the movement invalid
-	for (const auto p : result) {
+
+	// Temporarily clear origin points
+	for (const auto p : m.origins) {
+		reset_block(p.y, p.x);
+	}
+
+	bool c = false;
+	for (const auto p : m.result()) {
 		if (get_block(p.y, p.x)) {
-			return true;
+			c = true;
+			break;
 		}
 	}
 
-	return false;
+	// Restore origin points
+	for (const auto p : m.origins) {
+		fill_block(p.y, p.x);
+	}
+
+	return c;
 }
 
 bool CollisionState::get_block(int y, int x) const {
 	auto i = index(y, x);
-	return i >= state.size() ? true : state[i];
+	return valid_index(i) ? state[i] : true; // OOB must always cause collision
 }
 
 bool CollisionState::apply_movement(Movement &m) {
-	const bool c = collides(m);
+	bool c = collides(m);
 
 	for (auto p : m.origins) {
 		reset_block(p.y, p.x);
@@ -41,23 +55,23 @@ bool CollisionState::apply_movement(Movement &m) {
 		fill_block(p.y, p.x);
 	}
 
-	return c;
+	return !c;
 }
 
 bool CollisionState::fill_block(int y, int x) {
 	auto i = index(y, x);
-	if (i >= state.size()) {
+	if (!valid_index(i)) {
 		return false;
 	}
 	const bool c = state[i];
 	state[i] = true;
 
-	return !c;
+	return true;
 }
 
 bool CollisionState::reset_block(int y, int x) {
 	long i = index(y, x);
-	if (i >= state.size()) {
+	if (!valid_index(i)) {
 		return false;
 	}
 
@@ -68,7 +82,7 @@ bool CollisionState::reset_block(int y, int x) {
 
 bool CollisionState::reset_row(int y) {
 	long start = index(y, 0);
-	if (start + width > state.size()) {
+	if (!valid_index(start) || start + width > state.size()) {
 		return false;
 	}
 

@@ -12,11 +12,9 @@ Block::Block(bool solid) {
 	pad = NULL;
 }
 
-void Block::attach(WINDOW *parent, unique_ptr<CollisionState> &collision, Point p) {
+void Block::attach(WINDOW *parent, int y, int x) {
 	// Attach to ncurses pad
-	pad = subpad(parent, BLOCK_HEIGHT, BLOCK_WIDTH, p.y * BLOCK_HEIGHT, p.x * BLOCK_WIDTH);
-	// Attach to collision state
-	collision->fill_block(p.y, p.x);
+	pad = subpad(parent, BLOCK_HEIGHT, BLOCK_WIDTH, y * BLOCK_HEIGHT, x * BLOCK_WIDTH);
 }
 
 void Block::draw() {

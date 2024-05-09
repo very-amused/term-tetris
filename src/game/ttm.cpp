@@ -9,7 +9,6 @@
 #include "../ui.hpp"
 #include "../screens/game/grid.hpp"
 
-using std::vector;
 using std::unique_ptr;
 
 TTM::TTM(const TTMtemplate t) {
@@ -18,6 +17,11 @@ TTM::TTM(const TTMtemplate t) {
 	for (size_t row = 0; row < 2; row++) {
 		for (size_t col = 0; col < 4; col++) {
 			blocks[row][col] = Block(t.blocks[row][col]);
+		}
+	}
+	for (size_t row = 2; row < 4; row++) {
+		for (size_t col = 0; col < 4; col++) {
+			blocks[row][col] = Block(false);
 		}
 	}
 }
@@ -31,9 +35,9 @@ const int TTM::collision_y() const {
 
 	for (int row = 0; row < 4; row++) {
 		bool empty = true;
-		for (int col = y; col < 4; col++) {
+		for (int col = 0; col < 4; col++) {
 			if (blocks[row][col].solid) {
-				y++;
+				y = row + 1;
 				empty = false;
 				break;
 			}
@@ -71,12 +75,17 @@ void TTM::attach(const GameGrid *grid, unique_ptr<CollisionState> &collision) {
 	pad = newpad(4 * BLOCK_HEIGHT, 4 * BLOCK_WIDTH);
 	// Start at center, directly above grid
 	x =  wx_centered(grid->width_cols(), getmaxx(pad)) / BLOCK_WIDTH;
-	y = -collision_y();
+	y = 0; // FIXME
 
 	// Attach blocks
 	for (int row = 0; row < collision_y(); row++) {
 		for (int col = 0; col < collision_x(); col++) {
-			blocks[row][col].attach(pad, collision, Point{row, col}); 
+			auto &b = blocks[row][col];
+			if (!b.solid) {
+				continue;
+			}
+			collision->fill_block(y + row, x + col);
+			blocks[row][col].attach(pad, row, col);
 		}
 	}
 }
@@ -98,17 +107,19 @@ void TTM::draw() {
 #undef ARE_DEBUG
 	//printf("%d + %d\n", grid->offset_x(), x * BLOCK_WIDTH);
 	const int x_mincol = grid->offset_x() + (x * BLOCK_WIDTH);
-	// Calcualte absolute x/y end coords in screen units
-	const int y_maxrow = grid->offset_y() + ((y + collision_y()) * BLOCK_HEIGHT);
-	const int x_maxcol = grid->offset_x() + ((x + collision_x()) * BLOCK_WIDTH);
+	// Calcualte absolute x/y *inclusive* end coords in screen units
+	const int y_maxrow = grid->offset_y() + ((y + collision_y()) * BLOCK_HEIGHT) - 1;
+	const int x_maxcol = grid->offset_x() + ((x + collision_x()) * BLOCK_WIDTH) - 1;
 
 	// Use prefresh to render
 	//draw_border_light(pad); // FIXME: debug
-	for (auto &row : blocks) {
-		for (auto &blk : row) {
+	for (size_t row = 0; row < collision_y(); row++) {
+		for (size_t col = 0; col < collision_x(); col++) {
+			auto &blk = blocks[row][col];
 			blk.draw();
 		}
 	}
+
 	prefresh(pad, 0, 0,
 			y_minrow, x_mincol, y_maxrow, x_maxcol);
 }
@@ -145,6 +156,7 @@ bool TTM::move(Direction d, unique_ptr<CollisionState> &collision) {
 		return false;
 	}
 
+	collision->apply_movement(move);
 	y++;
 	return true;
 }
