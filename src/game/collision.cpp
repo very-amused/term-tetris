@@ -1,6 +1,9 @@
 #include <stdlib.h>
 
 #include "collision.hpp"
+#include <vector>
+
+using std::vector;
 
 CollisionState::CollisionState(int height, int width) {
 	this->height = height + 2;
@@ -52,6 +55,26 @@ bool CollisionState::collides(Movement &m) {
 bool CollisionState::get_block(int y, int x) const {
 	auto i = index(y, x);
 	return valid_index(i) ? state[i] : true; // OOB must always cause collision
+}
+
+vector<bool> CollisionState::get_row(int y) {
+	vector<bool> row;
+
+	// Validate y as a row start index
+	if (y % width != 0) {
+		return row;
+	}
+	auto start = index(y, 0), end = index(y, width);
+	if (!(valid_index(start) && valid_index(end - 1)))  {
+		return row;
+	}
+
+	row.reserve(width);
+	for (size_t i = start; i < end; i++) {
+		row.push_back(state[i]);
+	}
+
+	return row;
 }
 
 bool CollisionState::apply_movement(Movement &m) {

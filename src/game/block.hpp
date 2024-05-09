@@ -1,9 +1,5 @@
 #pragma once
 #include <cursesw.h>
-#include <memory>
-
-#include "motion.hpp"
-#include "collision.hpp"
 
 // Height of a Tetromino block (rows)
 static const int BLOCK_HEIGHT = 2;
