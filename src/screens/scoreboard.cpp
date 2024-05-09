@@ -29,7 +29,7 @@ const vector<SelectItem> ScoreboardScreen::SELECT_OPTS = {
 
 void ScoreboardScreen::show(Screen &screen, unique_ptr<DB> &db) {
 	// Draw screen border
-	draw_border();
+	draw_border(stdscr);
 	// Draw window border
 	draw_border_light(win);
 	// Draw title

@@ -25,7 +25,7 @@ const vector<SelectItem> MenuScreen::SELECT_OPTS = {
 
 void MenuScreen::show(Screen &screen) {
 	// Draw screen border
-	draw_border();
+	draw_border(stdscr);
 	// Draw window border
 	draw_border_light(win);
 	// Draw title

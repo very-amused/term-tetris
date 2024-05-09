@@ -87,8 +87,8 @@ void MainScreen::attach_db(unique_ptr<DB> &db) {
 	this->db.swap(db);
 }
 
-void draw_border() {
-	border_set(&BORDER_VLINE, &BORDER_VLINE,
+void draw_border(WINDOW *win) {
+	wborder_set(win, &BORDER_VLINE, &BORDER_VLINE,
 			&BORDER_HLINE, &BORDER_HLINE,
 			&BORDER_TL, &BORDER_TR,
 			&BORDER_BL, &BORDER_BR);

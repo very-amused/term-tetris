@@ -23,9 +23,8 @@ static const int GRID_HEIGHT = 20;
 static const int GRID_WIDTH = 10;
 
 void GameScreen::play(Screen &screen) {
-	// Since the screen is occupying the whole window, we need to redraw the border
-	draw_border();
-	refresh();
+	// Draw main screen border
+	draw_border(win);
 	// Initialize state if needed
 	if (!state) {
 		state.reset(new GameState(GRID_HEIGHT, GRID_WIDTH));

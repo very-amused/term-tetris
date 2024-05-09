@@ -35,8 +35,9 @@ static const cchar_t BORDER_MR_PIPE = _cchar(L'╡');
 static const cchar_t BORDER_HLINE_PIPE = _cchar(L'═');
 
 // Draw a heavy screen border
-void draw_border();
-// Draw a light border, for use with derived (sub) windows
+void draw_border(WINDOW *win);
+
+// Draw a light border
 void draw_border_light(WINDOW *win);
 
 // TODO: document
