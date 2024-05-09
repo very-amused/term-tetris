@@ -1,5 +1,9 @@
 #pragma once
 #include <cursesw.h>
+#include <memory>
+
+#include "motion.hpp"
+#include "collision.hpp"
 
 // Height of a Tetromino block (rows)
 static const int BLOCK_HEIGHT = 2;
@@ -22,9 +26,9 @@ public:
 	// Whether the block is visible and has collision
 	bool solid;
 
-	// Attach to parent pad at (x, y).
+	// Attach to parent pad and collision state at (x, y).
 	// x/y are in blocks and will be scaled
-	void attach(WINDOW *parent, int y, int x);
+	void attach(WINDOW *parent, std::unique_ptr<CollisionState> &collision, Point p);
 
 	void draw();
 

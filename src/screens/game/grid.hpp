@@ -16,8 +16,6 @@ struct GameGrid {
 public:
 	void draw(const std::unique_ptr<GameState> &state);
 
-	static const int OVERHEAD_ROWS = 2;
-
 	// Get the grid's absolute y offset in lines
 	const int offset_y() const;
 	// Get the grid's absolute x offset in cols

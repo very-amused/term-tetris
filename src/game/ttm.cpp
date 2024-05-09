@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <vector>
 #include <memory>
 #include <cursesw.h>
 
@@ -8,6 +9,7 @@
 #include "../ui.hpp"
 #include "../screens/game/grid.hpp"
 
+using std::vector;
 using std::unique_ptr;
 
 TTM::TTM(const TTMtemplate t) {
@@ -71,19 +73,10 @@ void TTM::attach(const GameGrid *grid, unique_ptr<CollisionState> &collision) {
 	x =  wx_centered(grid->width_cols(), getmaxx(pad)) / BLOCK_WIDTH;
 	y = -collision_y();
 
-	// Initialize collision
-	collision.
-
 	// Attach blocks
 	for (int row = 0; row < collision_y(); row++) {
 		for (int col = 0; col < collision_x(); col++) {
-			auto &b = blocks[row][col];
-			if (!b.solid) {
-				continue;
-			}
-
-			b.attach(pad, row, col);
-			collision->fill_block(y + row, x + col);
+			blocks[row][col].attach(pad, collision, Point{row, col}); 
 		}
 	}
 }
@@ -110,6 +103,7 @@ void TTM::draw() {
 	const int x_maxcol = grid->offset_x() + ((x + collision_x()) * BLOCK_WIDTH);
 
 	// Use prefresh to render
+	//draw_border_light(pad); // FIXME: debug
 	for (auto &row : blocks) {
 		for (auto &blk : row) {
 			blk.draw();
@@ -119,31 +113,39 @@ void TTM::draw() {
 			y_minrow, x_mincol, y_maxrow, x_maxcol);
 }
 
+BlockPoints TTM::block_points() {
+	BlockPoints points;
+	const int collision_area = collision_y() * collision_x();
+	points.coords.reserve(collision_area);
+	points.blocks.reserve(collision_area);
+
+	for (int row = 0; row < collision_y(); row++) {
+		for (int col = 0; col < collision_x(); col++) {
+			// Only push coordinates of solid blocks
+			if (!blocks[row][col].solid) {
+				continue;
+			}
+
+			points.coords.push_back({.y = y + row, .x = x + col});
+			points.blocks.push_back(&blocks[row][col]);
+		}
+	}
+
+	return points;
+}
+
 bool TTM::move(Direction d, unique_ptr<CollisionState> &collision) {
+	// Starting block points/coords
+	auto bp_start = block_points();
 	// Create movement struct
 	Movement move;
 	move.d = d;
-	auto points = block_points();
-	move.origins = std::move(points.coords);
+	move.origins = bp_start.coords;
 	if (collision->collides(move)) {
 		return false;
 	}
 
-	// Update collision state
-	collision->apply_movement(move);
-
-	// Basic transformations are simple: translate the TTM grid
-	switch (move.d) {
-	case Direction::Down:
-		y++;
-		break;
-	case Direction::Left:
-		x--;
-		break;
-	case Direction::Right:
-		x++;
-	}
-
+	y++;
 	return true;
 }
 

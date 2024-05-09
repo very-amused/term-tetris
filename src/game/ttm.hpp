@@ -21,14 +21,8 @@ struct TTMtemplate {
 	short origin[2];
 };
 
-struct BlockPoint {
-	Point point;
-	Block *block;
-};
-
-// A (coord, Block *) vector pair used for transformations
 struct BlockPoints {
-	std::vector<Point> coords;	
+	std::vector<Point> coords;
 	std::vector<Block *> blocks;
 };
 
@@ -39,7 +33,7 @@ struct TTM {
 	TTM(const TTM &) = delete;
 
 public:
-	// Attach grid to graphics and collision state
+	// Create a pad window and attach to stdscr and collision state
 	void attach(const GameGrid *grid, std::unique_ptr<CollisionState> &collision);
 	// Return whether the TTM has been attached for rendering
 	bool attached();
@@ -70,7 +64,7 @@ private:
 	const int collision_y() const;
 	const int collision_x() const;
 
-	// Get solid block points for transforms
+	// Get solid block coordinates for transformation
 	BlockPoints block_points();
 
 	Block blocks[4][4];

@@ -22,28 +22,23 @@ GameGrid::GameGrid(WINDOW *parent, int h_blocks, int w_blocks, int y, int x) {
 void GameGrid::draw(const unique_ptr<GameState> &state) {
 	draw_border_light(win);
 	swrefresh(parent, win);
-
-	state->current_ttm->draw();
+	if (state->current_ttm) {
+		state->current_ttm->draw();
+	} 
 }
 
 const int GameGrid::offset_y() const {
-	return getbegy(win);
+	return getbegy(win) + 1;
 }
 const int GameGrid::offset_x() const {
-	return getbegx(win);
-}
-const int GameGrid::end_y() const {
-	return getmaxy(win) - 1;
-}
-const int GameGrid::end_x() const {
-	return getmaxx(win) - 1;
+	return getbegx(win) + 1;
 }
 
 const int GameGrid::height_lines() const {
-	return end_y() - offset_y();
+	return getmaxy(win) - 1;
 }
 const int GameGrid::width_cols() const {
-	return getmaxx(win);
+	return getmaxx(win) - 1;
 }
 
 const int GameGrid::height_blocks() const {

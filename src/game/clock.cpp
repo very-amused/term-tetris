@@ -1,23 +1,23 @@
 #include "clock.hpp"
+#include "motion.hpp"
 #include "ttm-stream.hpp"
 #include <chrono>
+#include <cstdlib>
 #include <thread>
 
 using std::unique_ptr;
 using std::chrono::steady_clock;
 
 GameClock::GameClock() {
-	// Init ARE
 	are.fp = 18;
-
-	// Init gravity
 #ifdef DEBUG
-	gravity.fp = 5;
+	gravity.fp = 5; // Start drops much faster for quicker debugging
 #else
 	gravity.fp = 30;
 #endif
+	gravity.fc = 0;
 
-	// Init ticks
+	// Initialze tick period
 	last_tick = last_tick.min(); // Set last_tick to zero value
 }
 
@@ -45,14 +45,16 @@ void GameClock::tick(unique_ptr<GameState> &state, const unique_ptr<GameGrid> &g
 	}
 
 	/// Drop
-	// FIXME: next step is inputs + debouncing
-
+	// FIXME: inputs + debouncing
+	// TODO: soft drop
 	if (gravity.fc > 0) {
-		gravity.fc--;
+		gravity.fc -= ticks_elapsed;
 		return;
 	}
 	if (!state->current_ttm->move(Direction::Down, state->collision)) {
-		(void)state->current_ttm.release(); // FIXME: memory leak
+		(void)state->current_ttm.release(); // Memory leak
 		state->current_ttm.reset(NULL);
+		return;
 	}
+	gravity.fc = gravity.fp;
 }
