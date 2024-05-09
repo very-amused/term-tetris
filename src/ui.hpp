@@ -2,6 +2,7 @@
 #include <cursesw.h>
 #include <memory>
 
+#include "keybinds.hpp"
 #include "screens.hpp"
 #include "screens/main_menu.hpp"
 #include "screens/game.hpp"
@@ -32,13 +33,6 @@ static const cchar_t BORDER_MR_LIGHT = _cchar(L'┤');
 static const cchar_t BORDER_ML_PIPE = _cchar(L'╞');
 static const cchar_t BORDER_MR_PIPE = _cchar(L'╡');
 static const cchar_t BORDER_HLINE_PIPE = _cchar(L'═');
-
-// Movement keys
-#define LEFT 'h'
-#define UP 'k'
-#define DOWN 'j'
-#define RIGHT 'l'
-#define RETURN '\n'
 
 // Draw a heavy screen border
 void draw_border();

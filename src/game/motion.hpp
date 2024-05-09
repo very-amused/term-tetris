@@ -2,6 +2,7 @@
 #include <vector>
 
 enum struct Direction {
+	None,
 	Down,
 	Left,
 	Right

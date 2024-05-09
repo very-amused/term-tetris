@@ -12,7 +12,7 @@ using std::chrono::steady_clock;
 GameClock::GameClock() {
 	are.fp = 18;
 #ifdef DEBUG
-	gravity.fp = 5; // Start drops much faster for quicker debugging
+	gravity.fp = 10; // Start drops much faster for quicker debugging
 #else
 	gravity.fp = 30;
 #endif

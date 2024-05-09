@@ -1,5 +1,10 @@
+#include <memory>
+
 #include "game.hpp"
+#include "../game/input.hpp"
 #include "../ui.hpp"
+
+using std::unique_ptr;
 
 GameScreen::GameScreen() {
 	// Create window
@@ -32,6 +37,9 @@ void GameScreen::play(Screen &screen) {
 								 		 w = (GRID_WIDTH * BLOCK_WIDTH) + 2;
 		grid.reset(new GameGrid(win, GRID_HEIGHT, GRID_WIDTH, y_centered(h), x_centered(w)));
 	}
+	
+	// Initialize gameplay input
+	unique_ptr<GameInput> input(new GameInput(win));
 
 	// Start game clock loop
 	GameClock clock;
@@ -40,6 +48,9 @@ void GameScreen::play(Screen &screen) {
 		clock.tick(state, grid);
 		grid->draw(state);
 	}
+
+	// Restore input blocking
+	input.reset();
 
 	// After a game, we return to the main menu
 	wclear(win);

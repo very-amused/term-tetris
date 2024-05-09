@@ -7,7 +7,7 @@
 
 // Framecounter with associated frame period
 struct FrameCounter {
-	size_t fc, fp;
+	size_t fc, fp; // TODO: Frame counters will currently overflow and break things if we skip any frames
 };
 
 struct GameClock {
