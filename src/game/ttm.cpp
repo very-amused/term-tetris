@@ -75,7 +75,7 @@ void TTM::attach(const GameGrid *grid, unique_ptr<CollisionState> &collision) {
 	pad = newpad(4 * BLOCK_HEIGHT, 4 * BLOCK_WIDTH);
 	// Start at center, directly above grid
 	x =  wx_centered(grid->width_cols(), getmaxx(pad)) / BLOCK_WIDTH;
-	y = 0; // FIXME
+	y = -collision_y();
 
 	// Attach blocks
 	for (int row = 0; row < collision_y(); row++) {
@@ -98,18 +98,18 @@ void TTM::draw() {
 	using std::max;
 
 	// Calcualte absolute x/y in screen units
-#define ARE_DEBUG 1
-#if ARE_DEBUG
+#ifdef DEBUG
 	const int y_minrow = grid->offset_y() + (y * BLOCK_HEIGHT);
+	const int p_minrow = 0;
 #else
 	const int y_minrow = grid->offset_y() + max(y * BLOCK_HEIGHT, 0); // prevent ARE clipping
+	const int p_minrow = max(-y * BLOCK_HEIGHT, 0);
 #endif
-#undef ARE_DEBUG
 	//printf("%d + %d\n", grid->offset_x(), x * BLOCK_WIDTH);
 	const int x_mincol = grid->offset_x() + (x * BLOCK_WIDTH);
 	// Calcualte absolute x/y *inclusive* end coords in screen units
-	const int y_maxrow = grid->offset_y() + ((y + collision_y()) * BLOCK_HEIGHT) - 1;
-	const int x_maxcol = grid->offset_x() + ((x + collision_x()) * BLOCK_WIDTH) - 1;
+	const int y_maxrow = y_minrow + (collision_y() * BLOCK_HEIGHT) - 1;
+	const int x_maxcol = x_mincol + (collision_x() * BLOCK_WIDTH) - 1;
 
 	// Use prefresh to render
 	//draw_border_light(pad); // FIXME: debug
@@ -120,7 +120,7 @@ void TTM::draw() {
 		}
 	}
 
-	prefresh(pad, 0, 0,
+	prefresh(pad, p_minrow, 0,
 			y_minrow, x_mincol, y_maxrow, x_maxcol);
 }
 

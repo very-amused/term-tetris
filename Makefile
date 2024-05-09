@@ -33,12 +33,18 @@ run: $(tetris)
 	./$<
 .PHONY: run
 
-# Thanks Maggie :)
 debug: O=-O1
-debug: CFLAGS  += -g -fsanitize=address -fno-omit-frame-pointer -DDEBUG
+debug: CFLAGS += -g -DDEBUG
 debug: $(tetris)
 	./$<
-.PHONY: run
+.PHONY: debug
+
+# Thanks Maggie :)
+debug-sanitize: O=-O1
+debug-sanitize: CFLAGS  += -g -fsanitize=address -fno-omit-frame-pointer -DDEBUG
+debug-sanitize: $(tetris)
+	./$<
+.PHONY: debug-sanitize
 
 tar: $(archive)
 .PHONY: tar

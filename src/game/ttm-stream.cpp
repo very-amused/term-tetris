@@ -33,6 +33,7 @@ void TTMstream::push_ttm() {
 }
 
 unique_ptr<TTM> TTMstream::pop() {
+	populate();
 	auto block = std::move(queue.front());
 	queue.pop_front();
 
