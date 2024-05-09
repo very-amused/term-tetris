@@ -1,5 +1,6 @@
 O=-O3
-CFLAGS = $(O) -flto -Wall
+LTO=-flto
+CFLAGS = $(O) $(LTO) -Wall
 LDFLAGS=-lncursesw -lsqlite3
 CXXFLAGS=$(CFLAGS) -std=gnu++11
 
@@ -34,6 +35,7 @@ run: $(tetris)
 .PHONY: run
 
 debug: O=-O1
+debug: LTO=
 debug: CFLAGS += -g -DDEBUG
 debug: $(tetris)
 	./$<
@@ -41,6 +43,7 @@ debug: $(tetris)
 
 # Thanks Maggie :)
 debug-sanitize: O=-O1
+debug: LTO=
 debug-sanitize: CFLAGS  += -g -fsanitize=address -fno-omit-frame-pointer -DDEBUG
 debug-sanitize: $(tetris)
 	./$<
