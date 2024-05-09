@@ -20,6 +20,11 @@ struct TTMtemplate {
 	short origin[2];
 };
 
+struct BlockPoint {
+	Point point;
+	Block *block;
+};
+
 // A Tetromino composed of blocks
 struct TTM {
 	TTM(const TTMtemplate t);
@@ -29,6 +34,8 @@ struct TTM {
 public:
 	// Create a pad window and attach to stdscr
 	void attach(const GameGrid *grid);
+	// Return whether the TTM has been attached for rendering
+	bool attached();
 	// Render TTM (requires attach() first)
 	void draw();
 
@@ -56,8 +63,11 @@ private:
 	const int collision_y() const;
 	const int collision_x() const;
 
+	// Get solid block coordinates for transformation
+	std::vector<BlockPoint> block_coords();
+
 	Block blocks[4][4];
-	// (y, x) origin  coords for clockwise rotation.
+	// (y, x) origin  coord for clockwise rotation.
 	// negative coords denote that rotation is not permitted
 	short origin[2];
 };

@@ -26,6 +26,8 @@ public:
 	// x/y are in blocks and will be scaled
 	void attach(WINDOW *parent, int y, int x);
 
+	void draw();
+
 private:
 	// Block windows must be pads due to their parent TTM windows being pads
 	WINDOW *pad;

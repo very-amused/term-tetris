@@ -9,6 +9,11 @@ struct GameState {
 	// Initialize game state (including RNG) for play
 	GameState(int h_blocks, int w_blocks);
 
+	// The current game level (1-10)
+	unsigned short level;
+	// Whether the game is finished
+	bool done;
+
 	// Current Tetromino
 	std::unique_ptr<TTM> current_ttm;
 	// Stream/queue used for TTM (piece) gen

@@ -109,6 +109,13 @@ int y_centered(int height) {
 	return LINES/2 - height/2;
 }
 
+int wx_centered(int wcols, int width) {
+	return wcols/2 - width/2;
+}
+int wy_centered(int wlines, int height) {
+	return wlines/2 - height/2;
+}
+
 void draw_hline(WINDOW *win,
 		const cchar_t &BORDER_ML,
 		const cchar_t &BORDER_HLINE,

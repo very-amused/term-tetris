@@ -48,6 +48,8 @@ void draw_border_light(WINDOW *win);
 // TODO: document
 int x_centered(int width);
 int y_centered(int height);
+int wx_centered(int wcols, int width);
+int wy_centered(int wlines, int height);
 void draw_hline(WINDOW *win,
 		const cchar_t &BORDER_ML = BORDER_ML_LIGHT,
 		const cchar_t &BORDER_HLINE = BORDER_HLINE_LIGHT,

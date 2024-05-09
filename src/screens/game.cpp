@@ -13,9 +13,9 @@ GameScreen::~GameScreen() {
 }
 
 // Grid height in blocks
-static const int H_BLOCKS = 20;
+static const int GRID_HEIGHT = 20;
 // Grid width in blocks
-static const int W_BLOCKS = 10;
+static const int GRID_WIDTH = 10;
 
 void GameScreen::play(Screen &screen) {
 	// Since the screen is occupying the whole window, we need to redraw the border
@@ -23,16 +23,23 @@ void GameScreen::play(Screen &screen) {
 	refresh();
 	// Initialize state if needed
 	if (!state) {
-		state.reset(new GameState(H_BLOCKS, W_BLOCKS));
+		state.reset(new GameState(GRID_HEIGHT, GRID_WIDTH));
 	}
 
-	// Draw game grid
+	// Initialize grid
 	if (!grid) {
-		static const int h = (H_BLOCKS * BLOCK_HEIGHT) + 2, // account for borders to keep centering accurate
-								 		 w = (W_BLOCKS * BLOCK_WIDTH) + 2;
-		grid.reset(new GameGrid(win, H_BLOCKS, W_BLOCKS, y_centered(h), x_centered(w)));
+		static const int h = (GRID_HEIGHT * BLOCK_HEIGHT) + 2, // account for borders to keep centering accurate
+								 		 w = (GRID_WIDTH * BLOCK_WIDTH) + 2;
+		grid.reset(new GameGrid(win, GRID_HEIGHT, GRID_WIDTH, y_centered(h), x_centered(w)));
 	}
-	grid->draw(state);
+
+	// Start game clock loop
+	GameClock clock;
+	while (!state->done) {
+		// During each tick, the clock gets r/w access to state and ro access to grid
+		clock.tick(state, grid);
+		grid->draw(state);
+	}
 
 	// After a game, we return to the main menu
 	wclear(win);
