@@ -9,7 +9,16 @@ CollisionState::CollisionState(int height, int width) {
 }
 
 inline long CollisionState::index(int y, int x) const {
-	return (width * (y + 2)) + x;
+	if (x < 0 || x >= width) {
+		return -1;
+	}
+
+	y += 2;
+	if (y < 0 || x >= height) {
+		return -1;
+	}
+
+	return (width * y) + x;
 }
 inline bool CollisionState::valid_index(long i) const {
 	return i >= 0 && i < state.size();

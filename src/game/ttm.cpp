@@ -157,7 +157,19 @@ bool TTM::move(Direction d, unique_ptr<CollisionState> &collision) {
 	}
 
 	collision->apply_movement(move);
-	y++;
+	switch (d) {
+	case Direction::None:
+		break;
+	case Direction::Down:
+		y++;
+		break;
+	case Direction::Left:
+		x--;
+		break;
+	case Direction::Right:
+		x++;
+	}
+
 	return true;
 }
 

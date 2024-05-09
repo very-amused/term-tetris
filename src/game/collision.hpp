@@ -40,6 +40,7 @@ private:
 	std::vector<bool> state;
 
 	long index(int y, int x) const;
+	bool is_valid(int y, int x) const;
 	bool valid_index(const long i) const;
 
 	// Whether an overlap clip has occured (debugging purposes)

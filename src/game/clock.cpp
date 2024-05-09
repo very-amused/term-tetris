@@ -46,10 +46,18 @@ void GameClock::tick(std::unique_ptr<GameState> &state, std::unique_ptr<GameInpu
 		return;
 	}
 
+	// FIXME: rotate
+
+	// Translate
+	input->getkeys();
+	const Direction move_lateral = input->get_direction(true);
+	if (move_lateral == Direction::Left || move_lateral == Direction::Right) {
+		state->current_ttm->move(move_lateral, state->collision);
+	}
+
+
 	/// Drop
 	// Apply soft drop input if present
-	input->getkeys();
-
 	// TODO: softdrop is experiencing a hold delay and should not be
 	size_t gravity_fp;
 	if (input->get_direction(false) == Direction::Down) {

@@ -35,7 +35,7 @@ void Movement::calculate_results() {
 		inc.x = 1;
 	}
 	for (auto &p : result_points) {
-		p.x += inc.x;
 		p.y += inc.y;
+		p.x += inc.x;
 	}
 }
