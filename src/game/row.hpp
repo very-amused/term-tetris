@@ -13,11 +13,12 @@ struct BlockRow {
 	~BlockRow();
 
 public:
+	int y;
+
 	void push_block(Block block, int x);
 	void draw();
 
 private:
-	int y;
 	const GameGrid *grid;
 	// Main pad
 	WINDOW *pad;

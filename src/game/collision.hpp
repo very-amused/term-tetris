@@ -15,9 +15,11 @@ public:
 
 	// Returns whether the block at (x, y) is full.
 	bool get_block(int y, int x) const;
-	// Get collision state for an entire row.
-	// Returns an empty vector if y is not the start of a row
 	std::vector<bool> get_row(int y) const;
+
+	// Check and apply clears, returning a vector of the rows that were cleared
+	std::vector<int> check_clears();
+
 
 	// Updates collision state and movement points to reflect a movement. Returns false if a collision occured.
 	//

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <stdlib.h>
 
 #include "collision.hpp"
@@ -75,6 +76,32 @@ vector<bool> CollisionState::get_row(int y) const {
 	}
 
 	return row;
+}
+
+vector<int> CollisionState::check_clears() {
+	vector<int> clear_rows;
+
+	for (size_t y = 0; y < height - 2; y++) {
+		bool clear = true;
+		for (size_t x = 0; x < width; x++) {
+			if (!get_block(y, x)) {
+				clear = false;
+				break;
+			}
+		}
+
+		if (clear) {
+			reset_row(y);
+			// Shift above rows
+			for (size_t ys = y; ys > 0; ys--) {
+				// FIXME Lord have mercy
+				std::copy_n(state.begin() + index(ys-1, 0), width, state.begin() + index(ys, 0));
+			}
+			clear_rows.push_back(y);
+		}
+	}
+
+	return clear_rows;
 }
 
 bool CollisionState::apply_movement(Movement &m) {

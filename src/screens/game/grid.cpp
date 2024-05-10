@@ -25,12 +25,7 @@ void GameGrid::draw(const unique_ptr<GameState> &state) {
 		state->current_ttm->draw();
 	} 
 
-	// Draw placed TTMs
-	/*
-	for (auto &t : state->placed_ttms) {
-		t->draw();
-	}
-	*/
+	// Draw placed blocks
 	for (auto &row : state->rows) {
 		if (!row) {
 			continue;

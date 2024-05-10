@@ -74,7 +74,22 @@ void GameClock::tick(std::unique_ptr<GameState> &state, std::unique_ptr<GameInpu
 	// Handle placement
 	if (!state->current_ttm->move(Direction::Down, state->collision)) {
 		state->current_ttm->decompose(state->rows);
-		(void)state->current_ttm.release();
+		(void)state->current_ttm.release(); // FIXME?
+
+		// Handle clears
+		auto clears = state->collision->check_clears();	
+		for (auto y : clears) {
+			state->rows[y].reset();
+			if (y > 0) {
+				for (size_t ys = y; ys > 0; ys--) {
+					state->rows[ys-1].swap(state->rows[ys]);
+					if (state->rows[ys]) {
+						state->rows[ys]->y = ys;
+					}
+				}
+			}
+		}
+
 		return;
 	}
 	gravity.fc = gravity_fp;
