@@ -5,6 +5,8 @@ GameState::GameState(int h_blocks, int w_blocks) {
 	ttm_stream.reset(new TTMstream);
 	// Init collision
 	collision.reset(new CollisionState(h_blocks, w_blocks));
+	// Init rows
+	rows.resize(h_blocks);
 
 	level = 1;
 	done = false;

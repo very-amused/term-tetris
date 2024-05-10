@@ -1,10 +1,12 @@
 #pragma once
 #include <cursesw.h>
 #include <memory>
+#include <vector>
 
 #include "block.hpp"
 #include "motion.hpp"
 #include "collision.hpp"
+#include "row.hpp"
 
 struct GameGrid;
 
@@ -44,6 +46,9 @@ public:
 	bool move(Direction d, std::unique_ptr<CollisionState> &collision);
 	// Rotate the TTM about its center, returning false if collision prevented the movement
 	bool rotate(CollisionState &collision);
+
+	// Transfer blocks to a BlockRow
+	void decompose(std::vector<std::unique_ptr<BlockRow>> &rows);
 
 private:
 	// TTM pad windows have the flexibility of arbitrary placement and cropping

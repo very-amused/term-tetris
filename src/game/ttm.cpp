@@ -8,8 +8,10 @@
 #include "collision.hpp"
 #include "../ui.hpp"
 #include "../screens/game/grid.hpp"
+#include "row.hpp"
 
 using std::unique_ptr;
+using std::vector;
 
 TTM::TTM(const TTMtemplate t, chtype color) {
 	pad = NULL;
@@ -181,4 +183,28 @@ bool TTM::move(Direction d, unique_ptr<CollisionState> &collision) {
 bool TTM::rotate(CollisionState &collision) {
 	// TODO
 	return false;
+}
+
+// this is gonna be a mess. apologies
+void TTM::decompose(vector<unique_ptr<BlockRow>> &rows) {
+	using std::max;
+
+	if (y < 0) {
+		return;
+	}
+
+	const int y_minrow = grid->offset_y() + max(y * BLOCK_HEIGHT, 0); // prevent ARE clipping
+	const int x_mincol = grid->offset_x() + (x * BLOCK_WIDTH);
+
+	for (size_t row = 0; row < collision_y(); row++) {
+		auto ry = y + row;
+		if (!rows[ry]) {
+			rows[ry].reset(new BlockRow(grid, ry));
+		}
+		for (size_t col = 0; col < collision_x(); col++) {
+			if (blocks[row][col].solid) {
+				rows[ry]->push_block(std::move(blocks[row][col]), x + col);
+			}
+		}
+	}
 }

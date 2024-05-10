@@ -70,8 +70,11 @@ void GameClock::tick(std::unique_ptr<GameState> &state, std::unique_ptr<GameInpu
 		gravity.fc -= ticks_elapsed;
 		return;
 	}
+
+	// Handle placement
 	if (!state->current_ttm->move(Direction::Down, state->collision)) {
-		state->placed_ttms.push_front(state->current_ttm.release());
+		state->current_ttm->decompose(state->rows);
+		(void)state->current_ttm.release();
 		return;
 	}
 	gravity.fc = gravity_fp;
