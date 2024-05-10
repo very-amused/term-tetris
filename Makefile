@@ -17,7 +17,7 @@ objects=$(src:.cpp=.o)
 # Additional files we want to include in build/source archives
 sql=$(shell find sql/ -name *.sql)
 headers=$(shell find src/ -name *.hpp)
-src-extra=Makefile README.md LICENSE $(sql) $(headers)
+src-extra=Makefile README.md LICENSE report/writeup.md $(sql) $(headers)
 
 outdir=build
 # Ensure outdir exists

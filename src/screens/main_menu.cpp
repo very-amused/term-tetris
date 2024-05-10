@@ -19,7 +19,6 @@ MenuScreen::~MenuScreen() {
 
 const vector<SelectItem> MenuScreen::SELECT_OPTS = {
 	SelectItem("Play"),
-	SelectItem("High Scores"),
 	SelectItem("Exit", 'q')
 };
 
@@ -51,11 +50,13 @@ void MenuScreen::show(Screen &screen) {
 		// Play
 		screen = Screen::Game;
 		break;
+		/*
 	case 1:
 		// High Scores
 		screen = Screen::Leaderboard;
 		break;
-	case 2:
+		*/
+	case 1:
 		// Exit
 		screen = Screen::None;
 	}
