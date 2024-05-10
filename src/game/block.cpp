@@ -1,11 +1,9 @@
+#include <ncurses.h>
 #include <stdio.h>
 #include <cursesw.h>
-#include <memory>
 
 #include "block.hpp"
 #include "../ui.hpp"
-
-using std::unique_ptr;
 
 Block::Block(bool solid) {
 	this->solid = solid;
@@ -18,8 +16,7 @@ void Block::attach(WINDOW *parent, int y, int x) {
 }
 
 void Block::draw() {
-	static const cchar_t c = _cchar('0');
 	if (solid) {
-		wadd_wch(pad, &c);
+		wbkgd(pad, color);
 	}
 }

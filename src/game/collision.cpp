@@ -57,7 +57,7 @@ bool CollisionState::get_block(int y, int x) const {
 	return valid_index(i) ? state[i] : true; // OOB must always cause collision
 }
 
-vector<bool> CollisionState::get_row(int y) {
+vector<bool> CollisionState::get_row(int y) const {
 	vector<bool> row;
 
 	// Validate y as a row start index

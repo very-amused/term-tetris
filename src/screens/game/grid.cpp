@@ -14,9 +14,6 @@ GameGrid::GameGrid(WINDOW *parent, int h_blocks, int w_blocks, int y, int x) {
 
 	// Create window
 	win = newwin(h, w, y, x);
-	if (!win) {
-		printf("Panic!!!!\n");
-	}
 }
 
 void GameGrid::draw(const unique_ptr<GameState> &state) {

@@ -11,8 +11,9 @@
 
 using std::unique_ptr;
 
-TTM::TTM(const TTMtemplate t) {
+TTM::TTM(const TTMtemplate t, chtype color) {
 	pad = NULL;
+	this->color = color;
 	// Create block pad windows
 	for (size_t row = 0; row < 2; row++) {
 		for (size_t col = 0; col < 4; col++) {
@@ -85,7 +86,8 @@ void TTM::attach(const GameGrid *grid, unique_ptr<CollisionState> &collision) {
 				continue;
 			}
 			collision->fill_block(y + row, x + col);
-			blocks[row][col].attach(pad, row, col);
+			b.color = color;
+			b.attach(pad, row, col);
 		}
 	}
 }

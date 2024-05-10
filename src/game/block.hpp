@@ -21,6 +21,8 @@ struct Block {
 public:
 	// Whether the block is visible and has collision
 	bool solid;
+	// The block's color
+	chtype color;
 
 	// Attach to parent pad at (y, x) relative
 	void attach(WINDOW *parent, int y, int x);

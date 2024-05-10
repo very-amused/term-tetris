@@ -28,7 +28,7 @@ struct BlockPoints {
 
 // A Tetromino composed of blocks
 struct TTM {
-	TTM(const TTMtemplate t);
+	TTM(const TTMtemplate t, chtype color);
 	~TTM();
 	TTM(const TTM &) = delete;
 
@@ -64,6 +64,9 @@ private:
 	const int collision_y() const;
 	const int collision_x() const;
 
+	// Piece color for solid blocks
+	chtype color;	
+
 	// Get solid block coordinates for transformation
 	BlockPoints block_points();
 
@@ -71,29 +74,4 @@ private:
 	// (y, x) origin  coord for clockwise rotation.
 	// negative coords denote that rotation is not permitted
 	short origin[2];
-};
-
-// The classic Tetris Tetromino set
-static const TTMtemplate TTM_TEMPLATES[] = {
-	{
-		{{1, 1, 1, 0},
-		 {0, 1, 0, 0}}, {0, 1}},
-	{
-		{{1, 1, 1, 0},
-		 {0, 0, 1, 0}}, {0, 1}},
-	{
-		{{1, 1, 0, 0},
-		 {0, 1, 1, 0}}, {0, 1}},
-	{
-		{{1, 1, 0, 0},
-		 {1, 1, 0, 0}}, {-1, -1}},
-	{
-		{{0, 1, 1, 0},
-		 {1, 1, 0, 0}}, {0, 1}},
-	{
-		{{1, 1, 1, 0},
-		 {1, 0, 0, 0}}, {0, 1}},
-	{
-		{{1, 1, 1, 1},
-		 {0, 0, 0, 0}}, {0, 2}}
 };

@@ -36,6 +36,10 @@ MainScreen::MainScreen() {
 	// Enable keypad support
 	keypad(stdscr, TRUE);
 
+	// Enable colors
+	start_color();
+	use_default_colors();
+
 	// Set the main menu as the first window to be shown
 	screen = Screen::Menu;
 }

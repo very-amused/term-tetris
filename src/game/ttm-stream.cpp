@@ -1,4 +1,6 @@
 #include "ttm-stream.hpp"
+#include <cstddef>
+#include <cursesw.h>
 
 using std::unique_ptr;
 
@@ -8,7 +10,14 @@ TTMstream::TTMstream() {
 	std::random_device rd;
 	rand_gen.reset(new std::mt19937(rd()));
 	static const size_t block_templates_len = sizeof(TTM_TEMPLATES) / sizeof(TTM_TEMPLATES[0]);
-	rand_distrib = std::uniform_int_distribution<size_t>(0, block_templates_len - 1);
+	static const size_t block_colors_len = sizeof(BLOCK_COLORS) / sizeof(BLOCK_COLORS[0]);
+	shape_distrib = std::uniform_int_distribution<size_t>(0, block_templates_len - 1);
+	color_distrib = std::uniform_int_distribution<size_t>(1, block_colors_len);
+
+	// Initialize colors
+	for (size_t i = 0; i < block_colors_len; i++) {
+		init_pair(i+1, COLOR_WHITE, BLOCK_COLORS[i]);
+	}
 
 	populate();
 }
@@ -27,7 +36,7 @@ void TTMstream::push_ttm() {
 	// ref https://en.cppreference.com/w/cpp/container/deque/emplace_back
 	queue.emplace_back(
 			unique_ptr<TTM>(
-				new TTM(TTM_TEMPLATES[rand_distrib(*rand_gen.get())])
+				new TTM(TTM_TEMPLATES[shape_distrib(*rand_gen.get())], COLOR_PAIR(color_distrib(*rand_gen.get())))
 				)
 		);
 }

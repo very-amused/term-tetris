@@ -1,10 +1,8 @@
 #include "ui.hpp"
 #include "DB.hpp"
 
-#include <ctime>
 #include <cursesw.h>
 #include <memory>
-#include <stdlib.h>
 
 using std::unique_ptr;
 
