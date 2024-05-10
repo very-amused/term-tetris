@@ -95,7 +95,6 @@ bool CollisionState::fill_block(int y, int x) {
 	if (!valid_index(i)) {
 		return false;
 	}
-	const bool c = state[i];
 	state[i] = true;
 
 	return true;

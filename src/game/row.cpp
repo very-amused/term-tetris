@@ -2,19 +2,35 @@
 #include <cursesw.h>
 
 #include "row.hpp"
-#include "collision.hpp"
+#include "../screens/game/grid.hpp"
+#include "block.hpp"
 
 using std::unique_ptr;
 
-BlockRow::BlockRow(WINDOW *parent, int w_blocks, int y) {
+BlockRow::BlockRow(const GameGrid *grid, int y) {
+	this->grid = grid;
 	this->y = y;
-	int h = BLOCK_HEIGHT;
-	int w = w_blocks * BLOCK_WIDTH;
+	// Create a BLOCK_HEIGHT * grid len pad
+	pad = newpad(BLOCK_HEIGHT, grid->height_lines());
+}
 
-	// Scale and account for grid border
-	int y_col = 1 + (y * BLOCK_HEIGHT);
-	int x = 1;
+BlockRow::~BlockRow() {
+	delwin(pad);
+}
 
-	win = derwin(parent, h, w, y, x);
-	block_wins.resize(w_blocks, NULL);
+void BlockRow::push_block(Block block, int x) {
+	
+}
+
+void BlockRow::draw() {
+	const int y_minrow = grid->offset_y() + y * BLOCK_HEIGHT;
+	const int y_maxrow = y_minrow + BLOCK_HEIGHT - 1;
+	for (auto &b: blocks) {
+		if (!b.solid) {
+			continue;
+		}
+		b.draw();
+	}
+
+
 }

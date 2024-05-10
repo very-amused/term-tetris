@@ -13,8 +13,7 @@ struct Block {
 	Block(bool solid = false);
 
 	~Block() = default;
-	// Make movable but not copyable
-	Block(const Block &) = delete;
+	Block(const Block &) = default;
 	Block(Block &&) = default;
 	Block &operator=(Block &&) = default;
 
@@ -27,9 +26,15 @@ public:
 	// Attach to parent pad at (y, x) relative
 	void attach(WINDOW *parent, int y, int x);
 
-	void draw();
+	// Deattach from parent pad (if any) and attach to a new pad at (y, x) relative
+	void reattach(WINDOW *parent, int y, int x);
 
-private:
+	void draw();
+	// Redraw the individual block pad
+	void redraw(int y_minrow, int x_mincol);
+
 	// Block windows must be pads due to their parent TTM windows being pads
 	WINDOW *pad;
+private:
+	int y, x;
 };

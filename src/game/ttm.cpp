@@ -119,11 +119,18 @@ void TTM::draw() {
 		for (size_t col = 0; col < collision_x(); col++) {
 			auto &blk = blocks[row][col];
 			blk.draw();
+			if (blk.pad != NULL) {
+				prefresh(blk.pad, 0, 0,
+						y_minrow + (row * BLOCK_HEIGHT), x_mincol + (col * BLOCK_WIDTH),
+						y_minrow + ((row + 1) * BLOCK_HEIGHT), x_mincol + ((col + 1) * BLOCK_WIDTH));
+			}
 		}
 	}
 
+	/*
 	prefresh(pad, p_minrow, 0,
 			y_minrow, x_mincol, y_maxrow, x_maxcol);
+			*/
 }
 
 BlockPoints TTM::block_points() {

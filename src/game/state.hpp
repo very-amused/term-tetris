@@ -4,6 +4,7 @@
 #include "collision.hpp"
 #include "ttm.hpp"
 #include "ttm-stream.hpp"
+#include "row.hpp"
 
 struct GameState {
 	// Initialize game state (including RNG) for play
@@ -16,11 +17,12 @@ struct GameState {
 
 	// Current Tetromino
 	std::unique_ptr<TTM> current_ttm;
-	// Placed Tetromino rows
+	// Placed tetromino rows
+	std::vector<std::unique_ptr<BlockRow>> rows;
+	// Placed Tetromino pieces (FIXME: legacy)
 	std::deque<TTM *> placed_ttms;
 	// Stream/queue used for TTM (piece) gen
 	std::unique_ptr<TTMstream> ttm_stream;
 	// Collision bitmap
 	std::unique_ptr<CollisionState> collision;
-	// TODO: input state
 };
