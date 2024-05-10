@@ -114,16 +114,12 @@ void TTM::draw() {
 	const int x_maxcol = x_mincol + (collision_x() * BLOCK_WIDTH) - 1;
 
 	// Use prefresh to render
-	//draw_border_light(pad); // FIXME: debug
 	for (size_t row = 0; row < collision_y(); row++) {
 		for (size_t col = 0; col < collision_x(); col++) {
 			auto &blk = blocks[row][col];
 			blk.draw();
-			if (blk.pad != NULL) {
-				prefresh(blk.pad, 0, 0,
-						y_minrow + (row * BLOCK_HEIGHT), x_mincol + (col * BLOCK_WIDTH),
-						y_minrow + ((row + 1) * BLOCK_HEIGHT), x_mincol + ((col + 1) * BLOCK_WIDTH));
-			}
+			// FIXME: this sucks
+			blk.refresh(y_minrow, x_mincol, row, col);
 		}
 	}
 

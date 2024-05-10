@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <memory>
 #include <cursesw.h>
 
@@ -19,18 +20,24 @@ BlockRow::~BlockRow() {
 }
 
 void BlockRow::push_block(Block block, int x) {
-	
+	blocks[x] = std::move(block);
+
+	block.reattach(pad, 0, x);
 }
 
 void BlockRow::draw() {
-	const int y_minrow = grid->offset_y() + y * BLOCK_HEIGHT;
-	const int y_maxrow = y_minrow + BLOCK_HEIGHT - 1;
-	for (auto &b: blocks) {
+	using std::max;
+
+	const int y_minrow = grid->offset_y() + max(y * BLOCK_HEIGHT, 0); // prevent ARE clipping
+	const int x_mincol = grid->offset_x();
+
+	for (size_t x = 0; x < blocks.size(); x++) {
+		auto &b = blocks[x];
 		if (!b.solid) {
 			continue;
 		}
 		b.draw();
+
+		b.refresh(y_minrow, x_mincol, 0, x);
 	}
-
-
 }

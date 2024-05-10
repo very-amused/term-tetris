@@ -13,7 +13,7 @@ struct Block {
 	Block(bool solid = false);
 
 	~Block() = default;
-	Block(const Block &) = default;
+	Block(const Block &) = delete;
 	Block(Block &&) = default;
 	Block &operator=(Block &&) = default;
 
@@ -30,11 +30,10 @@ public:
 	void reattach(WINDOW *parent, int y, int x);
 
 	void draw();
-	// Redraw the individual block pad
-	void redraw(int y_minrow, int x_mincol);
+	// Redraw the individual block pad using prefresh
+	void refresh(int y_minrow, int x_mincol, size_t row, size_t col);
 
+private:
 	// Block windows must be pads due to their parent TTM windows being pads
 	WINDOW *pad;
-private:
-	int y, x;
 };
